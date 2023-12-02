@@ -1,15 +1,15 @@
-version: "3.4"
+version: '3'
 
 services:
   frontend:
     image: ${DOCKER_REGISTRY-}frontend
-    build:
-      context: ./Frontend/Tumultu
-      dockerfile: Dockerfile
+    build: ./Frontend/Tumultu
     ports:
       - "4200:4200"
     volumes:
-      - ./Frontend/Tumultu:/app
+      - ./Frontend/Tumultu:/app`
+    command: >
+        bash -c "npm install && ng serve --host 0.0.0.0 --port 4200"
 
 volumes:
   app:

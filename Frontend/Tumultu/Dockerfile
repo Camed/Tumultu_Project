@@ -1,12 +1,8 @@
-# Etap 1: Budowanie aplikacji Angular
-FROM node:lts
+# Stage 1: Build the Angular application
+FROM node:lts AS builder
 
 WORKDIR /app
 
-COPY package*.json ./
-
-RUN npm install
+RUN npm install -g @angular/cli 
 
 COPY . .
-
-CMD ["npm", "start"]
