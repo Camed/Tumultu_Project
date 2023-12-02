@@ -1,7 +1,7 @@
 # Stage 1: Build the Angular application
 FROM node:lts AS builder
 
-WORKDIR /app
+WORKDIR /usr/src/app 
 
 RUN npm install -g @angular/cli 
 
