@@ -1,0 +1,16 @@
+version: "3.4"
+
+services:
+  frontend:
+    image: ${DOCKER_REGISTRY-}frontend
+    build:
+      context: ./Frontend/Tumultu
+      dockerfile: Dockerfile
+    ports:
+      - "4200:4200"
+    volumes:
+      - ./Frontend/Tumultu:/app
+
+volumes:
+  app:
+    external: true
