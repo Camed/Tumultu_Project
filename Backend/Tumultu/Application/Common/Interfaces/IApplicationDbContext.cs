@@ -1,6 +1,7 @@
 ﻿using Domain.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Tumultu.Domain.Entities;
+using Tumutlu.Domain.ValueObjects;
 
 namespace Tumultu.Application.Interfaces.Common;
 
