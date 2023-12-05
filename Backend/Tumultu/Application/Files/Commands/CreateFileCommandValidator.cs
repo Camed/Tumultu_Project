@@ -1,4 +1,7 @@
 ﻿using FluentValidation;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using Tumultu.Application.Common.Models;
 
 namespace Tumultu.Application.Files.Commands;
 
@@ -6,17 +9,21 @@ public class CreateFileCommandValidator : AbstractValidator<CreateFileCommand>
 {
     public CreateFileCommandValidator()
     {
+        var settings = JsonConvert.DeserializeObject<Settings>(File.ReadAllText("./appsettings.json"));
+
+        if(settings is null) throw new ArgumentNullException(nameof(settings));
+
         RuleFor(x => x.Payload)
             .NotNull()
             .NotEmpty();
 
         RuleFor(x => x.Payload.Length)
-            .LessThanOrEqualTo(26_214_400) // 25mb max
-            .GreaterThanOrEqualTo(1); // 1 byte min 
+            .LessThanOrEqualTo(settings.Common.MaximumFileSize)
+            .GreaterThanOrEqualTo(settings.Common.MinimumFileSize);
 
 
         RuleFor(x => x.FileName)
-            .MaximumLength(100) // maximum file name length is 100 characters
+            .MaximumLength(settings.Common.MaximumFileNameLength)
             .NotNull()
             .NotEmpty();
     }

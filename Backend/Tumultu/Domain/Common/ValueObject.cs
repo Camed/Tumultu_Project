@@ -16,6 +16,7 @@ public abstract class ValueObject
     protected abstract IEnumerable<object> GetEqualityComponents();
     protected static bool EqualOperator(ValueObject l, ValueObject r)
     {
+        // ^ is XOR operator (XD)
         if(l is null ^ r is null)
         {
             return false;
