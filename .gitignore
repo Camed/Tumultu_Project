@@ -396,4 +396,16 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
-Frontend/Tumultu/.vscode/extensions.json
+
+# Miscellaneous
+Frontend/Tumultu/.angular/cache
+Frontend/Tumultu/.sass-cache/
+Frontend/Tumultu/connect.lock
+Frontend/Tumultu/coverage
+Frontend/Tumultu/libpeerconnection.log
+Frontend/Tumultu/testem.log
+Frontend/Tumultu/typings
+
+# System files
+Frontend/Tumultu/.DS_Store
+Frontend/Tumultu/Thumbs.db
