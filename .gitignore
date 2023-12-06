@@ -405,3 +405,5 @@ Frontend/Tumultu/typings
 # System files
 Frontend/Tumultu/.DS_Store
 Frontend/Tumultu/Thumbs.db
+
+/.idea/**/*
