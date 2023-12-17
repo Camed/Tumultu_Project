@@ -1,6 +1,6 @@
 ﻿using Tumultu.Domain.Common;
 
-namespace Tumutlu.Domain.ValueObjects;
+namespace Tumultu.Domain.ValueObjects;
 
 public class FileString : ValueObject
 {

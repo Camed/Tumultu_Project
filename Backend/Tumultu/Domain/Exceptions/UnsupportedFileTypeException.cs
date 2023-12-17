@@ -1,7 +1,4 @@
-﻿using System.ComponentModel;
-using Tumultu.Domain.Enums;
-
-namespace Tumutlu.Domain.Exceptions;
+﻿namespace Tumultu.Domain.Exceptions;
 
 public class UnsupportedFileTypeException : Exception
 {
