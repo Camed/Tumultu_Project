@@ -23,9 +23,9 @@ public class GetAnalysisResultByIdQueryHandler : IRequestHandler<GetAnalysisResu
         using IDbConnection connection = _connectionFactory.CreateOpenConnection();
         const string sql =
             """
-                SELECT ar.Guid, ar.AnalysisDate, ar.EntropyData
+                SELECT ar.Id, ar.AnalysisDate, ar.EntropyData
                 FROM AnalysisResults ar
-                WHERE ar.Guid = @Guid
+                WHERE ar.Id = @Id
             """;
         AnalysisResult? entity = await connection.QueryFirstOrDefaultAsync(
             sql,
