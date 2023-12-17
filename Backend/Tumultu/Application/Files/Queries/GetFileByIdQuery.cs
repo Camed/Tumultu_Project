@@ -1,10 +1,8 @@
 ﻿using Ardalis.GuardClauses;
 using Dapper;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using System.Data;
 using Tumultu.Application.Common.Interfaces;
-using Tumultu.Application.Interfaces.Common;
 using Tumultu.Domain.Entities;
 
 namespace Tumultu.Application.Files.Queries;
