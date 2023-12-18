@@ -1,4 +1,6 @@
-﻿namespace Tumultu.Application.Common.Interfaces;
+﻿using Tumultu.Domain.Common;
+
+namespace Tumultu.Application.Common.Interfaces;
 
 public interface IEntityRepository<TEntity, TKey> where TEntity : BaseEntity<TKey>
 {
