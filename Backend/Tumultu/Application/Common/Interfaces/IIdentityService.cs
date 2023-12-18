@@ -1,6 +1,4 @@
 ﻿using Tumultu.Application.Common.Models;
-using Tumultu.Domain.Constants;
-using Tumultu.Domain.Entities;
 
 namespace Tumultu.Application.Common.Interfaces;
 
