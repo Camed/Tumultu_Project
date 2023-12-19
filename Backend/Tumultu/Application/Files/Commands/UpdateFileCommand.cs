@@ -1,32 +1,34 @@
 ﻿using Ardalis.GuardClauses;
 using MediatR;
-using Tumultu.Application.Interfaces.Common;
+using Tumultu.Application.Common.Interfaces;
+using Tumultu.Domain.Entities;
 
 namespace Tumultu.Application.Files.Commands;
 
-public record class UpdateFileCommand : IRequest
+public record UpdateFileCommand : IRequest
 {
     public Guid Id { get; init; }
 }
 
 public class UpdateFileCommandHandler : IRequestHandler<UpdateFileCommand>
 {
-    private readonly IApplicationDbContext _context;
+    private readonly IRepository<FileEntity, Guid> _repository;
 
-    public UpdateFileCommandHandler(IApplicationDbContext context)
+    public UpdateFileCommandHandler(IRepository<FileEntity, Guid> repository)
     {
-        _context = context;
+        _repository = repository;
     }
 
     public async Task Handle(UpdateFileCommand request, CancellationToken cancellationToken)
     {
-        var entity = await _context.Files
-            .FindAsync(new object[] {  request.Id }, cancellationToken);
+        FileEntity? entity = await _repository.GetByIdAsync(request.Id);
 
         Guard.Against.NotFound(request.Id, entity);
 
         // change anything in entity
 
-        await _context.SaveChangesAsync(cancellationToken);
+        _repository.Update(entity);
+
+        await _repository.SaveChangesAsync(cancellationToken);
     }
 }
