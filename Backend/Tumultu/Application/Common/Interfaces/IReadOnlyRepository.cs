@@ -4,7 +4,7 @@ namespace Tumultu.Application.Common.Interfaces;
 
 public interface IReadOnlyRepository<TEntity, TId> where TEntity : BaseEntity<TId>
 {
-    Task<IEnumerable<TEntity>> GetAllAsync(Func<TEntity, bool>? filter = null, Func<TEntity, TId>? orderBy = null);
+    Task<IEnumerable<TEntity>> GetAllAsync();
 
     Task<TEntity?> GetByIdAsync(TId id);
 }

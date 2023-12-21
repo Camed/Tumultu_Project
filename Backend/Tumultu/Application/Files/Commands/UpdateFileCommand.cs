@@ -12,9 +12,9 @@ public record UpdateFileCommand : IRequest
 
 public class UpdateFileCommandHandler : IRequestHandler<UpdateFileCommand>
 {
-    private readonly IRepository<FileEntity, Guid> _repository;
+    private readonly IFilesRepository _repository;
 
-    public UpdateFileCommandHandler(IRepository<FileEntity, Guid> repository)
+    public UpdateFileCommandHandler(IFilesRepository repository)
     {
         _repository = repository;
     }

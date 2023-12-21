@@ -1,6 +1,5 @@
 ﻿using Ardalis.GuardClauses;
 using MediatR;
-using Tumultu.Application.Common.Interfaces;
 using Tumultu.Domain.Entities;
 
 namespace Tumultu.Application.Files.Queries;
@@ -12,9 +11,9 @@ public record GetFileByIdQuery : IRequest<FileEntity>
 
 public class GetFileByIdQueryHandler : IRequestHandler<GetFileByIdQuery, FileEntity>
 {
-    private readonly IReadOnlyRepository<FileEntity, Guid> _repository;
+    private readonly IFilesReadOnlyRepository _repository;
 
-    public GetFileByIdQueryHandler(IReadOnlyRepository<FileEntity, Guid> repository)
+    public GetFileByIdQueryHandler(IFilesReadOnlyRepository repository)
     {
         _repository = repository;
     }

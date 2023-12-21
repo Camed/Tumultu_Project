@@ -14,9 +14,9 @@ public record CreateFileCommand : IRequest<Guid>
 
 public class CreateFileCommandHandler : IRequestHandler<CreateFileCommand, Guid>
 {
-    private readonly IRepository<FileEntity, Guid> _repository;
+    private readonly IFilesRepository _repository;
 
-    public CreateFileCommandHandler(IRepository<FileEntity, Guid> repository)
+    public CreateFileCommandHandler(IFilesRepository repository)
     {
         _repository = repository;
     }
@@ -27,10 +27,8 @@ public class CreateFileCommandHandler : IRequestHandler<CreateFileCommand, Guid>
         string sha1 = request.Payload.GetSHA1();
         string sha256 = request.Payload.GetSHA256();
 
-        IEnumerable<FileEntity> filesWithSameSignature = await _repository.GetAllAsync(
-            file => file.MD5Signature == md5
-                    || file.SHA1Signature == sha1
-                    || file.SHA256Signature == sha256);
+        IEnumerable<FileEntity> filesWithSameSignature = 
+            await _repository.GetAllByAnySignature(md5, sha1, sha256);
 
         // this file already exists
         if (filesWithSameSignature.Any())

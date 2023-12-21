@@ -10,9 +10,9 @@ public record DeleteFileCommand(Guid Id) : IRequest;
 
 public class DeleteFileCommandHandler : IRequestHandler<DeleteFileCommand>
 {
-    private readonly IRepository<FileEntity, Guid> _repository;
+    private readonly IFilesRepository _repository;
 
-    public DeleteFileCommandHandler(IRepository<FileEntity, Guid> repository)
+    public DeleteFileCommandHandler(IFilesRepository repository)
     {
         _repository = repository;
     }

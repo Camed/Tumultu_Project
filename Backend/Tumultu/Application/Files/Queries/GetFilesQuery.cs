@@ -1,5 +1,4 @@
 using MediatR;
-using Tumultu.Application.Common.Interfaces;
 using Tumultu.Domain.Entities;
 
 namespace Tumultu.Application.Files.Queries;
@@ -8,9 +7,9 @@ public record GetFilesQuery : IRequest<IEnumerable<FileEntity>>;
 
 public class GetFilesQueryHandler : IRequestHandler<GetFilesQuery, IEnumerable<FileEntity>>
 {
-    private readonly IReadOnlyRepository<FileEntity, Guid> _repository;
+    private readonly IFilesReadOnlyRepository _repository;
 
-    public GetFilesQueryHandler(IReadOnlyRepository<FileEntity, Guid> repository)
+    public GetFilesQueryHandler(IFilesReadOnlyRepository repository)
     {
         _repository = repository;
     }
