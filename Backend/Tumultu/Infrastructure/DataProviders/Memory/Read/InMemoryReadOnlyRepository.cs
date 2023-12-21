@@ -2,7 +2,7 @@ using Ardalis.GuardClauses;
 using Tumultu.Application.Common.Interfaces;
 using Tumultu.Domain.Common;
 
-namespace Tumultu.Infrastructure.DataProviders.Memory;
+namespace Tumultu.Infrastructure.DataProviders.Memory.Read;
 
 public abstract class InMemoryReadOnlyRepository<TEntity, TId> : IReadOnlyRepository<TEntity, TId> where TEntity: BaseEntity<TId>
 {

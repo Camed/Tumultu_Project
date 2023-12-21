@@ -2,7 +2,7 @@ using Ardalis.GuardClauses;
 using Tumultu.Application.Common.Interfaces;
 using Tumultu.Domain.Common;
 
-namespace Tumultu.Infrastructure.DataProviders.Memory;
+namespace Tumultu.Infrastructure.DataProviders.Memory.Write;
 
 public abstract class InMemoryRepository<TEntity,TId> : IRepository<TEntity,TId> where TEntity: BaseEntity<TId>
 {

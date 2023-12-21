@@ -11,8 +11,14 @@ public static class DependencyInjection
 {
     public static void AddInfrastructure(this IServiceCollection services)
     {
+        //In memory
         services.AddSingleton<IFilesReadOnlyRepository, InMemoryFilesReadOnlyRepository>();
         services.AddSingleton<IFilesRepository, InMemoryFilesRepository>();
         services.AddSingleton<IFileVariantsRepository, InMemoryFileVariantsRepository>();
+
+        // //EF Core for writes, Dapper for reads
+        // services.AddSingleton<IFilesReadOnlyRepository, DapperFilesReadOnlyRepository>();
+        // services.AddSingleton<IFilesRepository, EfCoreFilesRepository>();
+        // services.AddSingleton<IFileVariantsRepository, EfCoreFileVariantsRepository>();
     }
 }
