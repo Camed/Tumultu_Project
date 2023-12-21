@@ -23,9 +23,9 @@ public class CreateFileCommandHandler : IRequestHandler<CreateFileCommand, Guid>
 
     public async Task<Guid> Handle(CreateFileCommand request, CancellationToken cancellationToken)
     {
-        var md5 = request.Payload.GetMD5();
-        var sha1 = request.Payload.GetSHA1();
-        var sha256 = request.Payload.GetSHA256();
+        string md5 = request.Payload.GetMD5();
+        string sha1 = request.Payload.GetSHA1();
+        string sha256 = request.Payload.GetSHA256();
 
         IEnumerable<FileEntity> filesWithSameSignature = await _repository.GetAllAsync(
             file => file.MD5Signature == md5
