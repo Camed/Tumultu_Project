@@ -1,6 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using Tumultu.Application.Common.Interfaces;
-using Tumultu.Infrastructure.Data.InMemory;
+using Tumultu.Infrastructure.Storage.Memory;
 
 namespace Tumultu.Infrastructure;
 
