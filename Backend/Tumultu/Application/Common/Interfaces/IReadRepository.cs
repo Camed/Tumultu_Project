@@ -2,7 +2,7 @@ using Tumultu.Domain.Common;
 
 namespace Tumultu.Application.Common.Interfaces;
 
-public interface IReadOnlyRepository<TEntity, TId> where TEntity : BaseEntity<TId>
+public interface IReadRepository<TEntity, TId> where TEntity : BaseEntity<TId>
 {
     Task<IEnumerable<TEntity>> GetAllAsync();
 

@@ -10,22 +10,24 @@ public record DeleteFileCommand(Guid Id) : IRequest;
 
 public class DeleteFileCommandHandler : IRequestHandler<DeleteFileCommand>
 {
-    private readonly IFilesRepository _repository;
+    private readonly IFilesReadRepository _readRepository;
+    private readonly IFilesWriteRepository _writeRepository;
 
-    public DeleteFileCommandHandler(IFilesRepository repository)
+    public DeleteFileCommandHandler(IFilesReadRepository readRepository, IFilesWriteRepository writeRepository)
     {
-        _repository = repository;
+        _readRepository = readRepository;
+        _writeRepository = writeRepository;
     }
 
     public async Task Handle(DeleteFileCommand request, CancellationToken cancellationToken)
     {
-        FileEntity? entity = await _repository.GetByIdAsync(request.Id);
+        FileEntity? entity = await _readRepository.GetByIdAsync(request.Id);
 
         Guard.Against.NotFound(request.Id, entity);
 
-        _repository.Delete(entity);
+        _writeRepository.Delete(entity);
 
-        await _repository.SaveChangesAsync(cancellationToken);
+        await _writeRepository.SaveChangesAsync(cancellationToken);
 
         entity.AddDomainEvent(new FileDeletedEvent(entity));
     }

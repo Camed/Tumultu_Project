@@ -1,9 +1,10 @@
-using Tumultu.Application.Files.Commands;
+using Tumultu.Application.Files;
+using Tumultu.Application.Files.Queries;
 using Tumultu.Domain.Entities;
 
-namespace Tumultu.Infrastructure.DataProviders.Memory.Write;
+namespace Tumultu.Infrastructure.DataProviders.Memory.Read;
 
-public class InMemoryFilesRepository : InMemoryRepository<FileEntity, Guid>, IFilesRepository
+public class InMemoryFilesReadRepository : InMemoryReadRepository<FileEntity, Guid>, IFilesReadRepository
 {
     public Task<IEnumerable<FileEntity>> GetAllByAnySignature(string? md5Signature, string? sha1Signature, string? sha256Signature)
     {

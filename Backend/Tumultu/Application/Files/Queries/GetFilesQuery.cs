@@ -7,9 +7,9 @@ public record GetFilesQuery : IRequest<IEnumerable<FileEntity>>;
 
 public class GetFilesQueryHandler : IRequestHandler<GetFilesQuery, IEnumerable<FileEntity>>
 {
-    private readonly IFilesReadOnlyRepository _repository;
+    private readonly IFilesReadRepository _repository;
 
-    public GetFilesQueryHandler(IFilesReadOnlyRepository repository)
+    public GetFilesQueryHandler(IFilesReadRepository repository)
     {
         _repository = repository;
     }

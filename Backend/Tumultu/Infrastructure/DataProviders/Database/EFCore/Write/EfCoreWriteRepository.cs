@@ -4,11 +4,11 @@ using Tumultu.Domain.Common;
 
 namespace Tumultu.Infrastructure.DataProviders.Database.EFCore.Write;
 
-public abstract class EfCoreRepository<TEntity, TId> : IRepository<TEntity, TId> where TEntity : BaseEntity<TId>
+public abstract class EfCoreWriteRepository<TEntity, TId> : IWriteRepository<TEntity, TId> where TEntity : BaseEntity<TId>
 {
     protected readonly DbContext Context;
 
-    protected EfCoreRepository(DbContext context)
+    protected EfCoreWriteRepository(DbContext context)
     {
         Context = context;
     }

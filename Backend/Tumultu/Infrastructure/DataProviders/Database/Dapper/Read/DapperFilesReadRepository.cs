@@ -1,15 +1,16 @@
 using System.Data;
 using Dapper;
+using Tumultu.Application.Files;
 using Tumultu.Application.Files.Queries;
 using Tumultu.Domain.Entities;
 
 namespace Tumultu.Infrastructure.DataProviders.Database.Dapper.Read;
 
-class DapperFilesReadOnlyRepository : IFilesReadOnlyRepository
+class DapperFilesReadRepository : IFilesReadRepository
 {
     private readonly IDapperDbContext _context;
 
-    public DapperFilesReadOnlyRepository(IDapperDbContext context)
+    public DapperFilesReadRepository(IDapperDbContext context)
     {
         _context = context;
     }

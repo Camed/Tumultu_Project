@@ -8,11 +8,11 @@ public record CreateFileVariantCommand : IRequest<Guid>
 
 public class CreateFileVariantCommandHander : IRequestHandler<CreateFileVariantCommand, Guid>
 {
-    private readonly IFileVariantsRepository _repository;
+    private readonly IFileVariantsWriteRepository _writeRepository;
 
-    public CreateFileVariantCommandHander(IFileVariantsRepository repository)
+    public CreateFileVariantCommandHander(IFileVariantsWriteRepository writeRepository)
     {
-        _repository = repository;
+        _writeRepository = writeRepository;
     }
 
     public Task<Guid> Handle(CreateFileVariantCommand request, CancellationToken cancellationToken)

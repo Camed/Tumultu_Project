@@ -14,11 +14,13 @@ public record CreateFileCommand : IRequest<Guid>
 
 public class CreateFileCommandHandler : IRequestHandler<CreateFileCommand, Guid>
 {
-    private readonly IFilesRepository _repository;
+    private readonly IFilesReadRepository _readRepository;
+    private readonly IFilesWriteRepository _writeRepository;
 
-    public CreateFileCommandHandler(IFilesRepository repository)
+    public CreateFileCommandHandler(IFilesReadRepository readRepository, IFilesWriteRepository writeRepository)
     {
-        _repository = repository;
+        _readRepository = readRepository;
+        _writeRepository = writeRepository;
     }
 
     public async Task<Guid> Handle(CreateFileCommand request, CancellationToken cancellationToken)
@@ -28,7 +30,7 @@ public class CreateFileCommandHandler : IRequestHandler<CreateFileCommand, Guid>
         string sha256 = request.Payload.GetSHA256();
 
         IEnumerable<FileEntity> filesWithSameSignature = 
-            await _repository.GetAllByAnySignature(md5, sha1, sha256);
+            await _readRepository.GetAllByAnySignature(md5, sha1, sha256);
 
         // this file already exists
         if (filesWithSameSignature.Any())
@@ -45,9 +47,9 @@ public class CreateFileCommandHandler : IRequestHandler<CreateFileCommand, Guid>
             Size = request.Payload.Length,
         };
 
-        _repository.Insert(entity);
+        _writeRepository.Insert(entity);
 
-        await _repository.SaveChangesAsync(cancellationToken);
+        await _writeRepository.SaveChangesAsync(cancellationToken);
 
         entity.AddDomainEvent(new FileCreatedEvent(entity));
 

@@ -12,23 +12,25 @@ public record UpdateFileCommand : IRequest
 
 public class UpdateFileCommandHandler : IRequestHandler<UpdateFileCommand>
 {
-    private readonly IFilesRepository _repository;
+    private readonly IFilesReadRepository _readRepository;
+    private readonly IFilesWriteRepository _writeRepository;
 
-    public UpdateFileCommandHandler(IFilesRepository repository)
+    public UpdateFileCommandHandler(IFilesReadRepository readRepository, IFilesWriteRepository writeRepository)
     {
-        _repository = repository;
+        _readRepository = readRepository;
+        _writeRepository = writeRepository;
     }
 
     public async Task Handle(UpdateFileCommand request, CancellationToken cancellationToken)
     {
-        FileEntity? entity = await _repository.GetByIdAsync(request.Id);
+        FileEntity? entity = await _readRepository.GetByIdAsync(request.Id);
 
         Guard.Against.NotFound(request.Id, entity);
 
         // change anything in entity
 
-        _repository.Update(entity);
+        _writeRepository.Update(entity);
 
-        await _repository.SaveChangesAsync(cancellationToken);
+        await _writeRepository.SaveChangesAsync(cancellationToken);
     }
 }
