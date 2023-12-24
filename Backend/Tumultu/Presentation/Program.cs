@@ -1,4 +1,5 @@
 using Tumultu.Application;
+using Tumultu.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,7 +10,9 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddApplicationServices();
+builder.Services
+    .AddApplicationServices()
+    .AddInfrastructure();
 
 var app = builder.Build();
 

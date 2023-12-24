@@ -5,25 +5,32 @@ using Tumultu.Domain.Entities;
 
 namespace Tumultu.Application.Files.Commands;
 
-public record class UpdateFileCommand : IRequest
+public record UpdateFileCommand : IRequest
 {
     public Guid Id { get; init; }
 }
 
 public class UpdateFileCommandHandler : IRequestHandler<UpdateFileCommand>
 {
-    private readonly IRepository<FileEntity, Guid> _repository;
+    private readonly IFilesReadRepository _readRepository;
+    private readonly IWriteRepository<FileEntity, Guid> _writeRepository;
 
-    public UpdateFileCommandHandler(IRepository<FileEntity, Guid> repository)
+    public UpdateFileCommandHandler(IFilesReadRepository readRepository, IWriteRepository<FileEntity, Guid> writeRepository)
     {
-        _repository = repository;
+        _readRepository = readRepository;
+        _writeRepository = writeRepository;
     }
 
     public async Task Handle(UpdateFileCommand request, CancellationToken cancellationToken)
     {
-        var entity = await _repository
-            .FindAsync(request.Id);
+        FileEntity? entity = await _readRepository.GetByIdAsync(request.Id);
 
         Guard.Against.NotFound(request.Id, entity);
+
+        // change anything in entity
+
+        _writeRepository.Update(entity);
+
+        await _writeRepository.SaveChangesAsync(cancellationToken);
     }
 }
