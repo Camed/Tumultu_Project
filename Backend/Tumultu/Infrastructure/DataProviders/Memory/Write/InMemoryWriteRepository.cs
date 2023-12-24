@@ -3,7 +3,7 @@ using Tumultu.Domain.Common;
 
 namespace Tumultu.Infrastructure.DataProviders.Memory.Write;
 
-public abstract class InMemoryWriteRepository<TEntity,TId> : IWriteRepository<TEntity,TId> where TEntity: BaseEntity<TId>
+public class InMemoryWriteRepository<TEntity, TId> : IWriteRepository<TEntity, TId> where TEntity : BaseEntity<TId>
 {
     public void Insert(TEntity entity)
     {
@@ -30,7 +30,7 @@ public abstract class InMemoryWriteRepository<TEntity,TId> : IWriteRepository<TE
 
     public void Update(TEntity entity)
     {
-        TEntity? toBeUpdated =  InMemoryData<TEntity>.Data.Find(e => entity.Equals(e.Id));
+        TEntity? toBeUpdated = InMemoryData<TEntity>.Data.Find(e => entity.Equals(e.Id));
 
         if (toBeUpdated is not null) Delete(toBeUpdated);
 

@@ -13,9 +13,9 @@ public record UpdateFileCommand : IRequest
 public class UpdateFileCommandHandler : IRequestHandler<UpdateFileCommand>
 {
     private readonly IFilesReadRepository _readRepository;
-    private readonly IFilesWriteRepository _writeRepository;
+    private readonly IWriteRepository<FileEntity, Guid> _writeRepository;
 
-    public UpdateFileCommandHandler(IFilesReadRepository readRepository, IFilesWriteRepository writeRepository)
+    public UpdateFileCommandHandler(IFilesReadRepository readRepository, IWriteRepository<FileEntity, Guid> writeRepository)
     {
         _readRepository = readRepository;
         _writeRepository = writeRepository;

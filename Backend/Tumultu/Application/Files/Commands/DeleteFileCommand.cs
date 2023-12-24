@@ -11,9 +11,9 @@ public record DeleteFileCommand(Guid Id) : IRequest;
 public class DeleteFileCommandHandler : IRequestHandler<DeleteFileCommand>
 {
     private readonly IFilesReadRepository _readRepository;
-    private readonly IFilesWriteRepository _writeRepository;
+    private readonly IWriteRepository<FileEntity, Guid> _writeRepository;
 
-    public DeleteFileCommandHandler(IFilesReadRepository readRepository, IFilesWriteRepository writeRepository)
+    public DeleteFileCommandHandler(IFilesReadRepository readRepository, IWriteRepository<FileEntity, Guid> writeRepository)
     {
         _readRepository = readRepository;
         _writeRepository = writeRepository;

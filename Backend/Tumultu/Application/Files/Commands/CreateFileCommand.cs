@@ -15,9 +15,9 @@ public record CreateFileCommand : IRequest<Guid>
 public class CreateFileCommandHandler : IRequestHandler<CreateFileCommand, Guid>
 {
     private readonly IFilesReadRepository _readRepository;
-    private readonly IFilesWriteRepository _writeRepository;
+    private readonly IWriteRepository<FileEntity, Guid> _writeRepository;
 
-    public CreateFileCommandHandler(IFilesReadRepository readRepository, IFilesWriteRepository writeRepository)
+    public CreateFileCommandHandler(IFilesReadRepository readRepository, IWriteRepository<FileEntity, Guid> writeRepository)
     {
         _readRepository = readRepository;
         _writeRepository = writeRepository;
