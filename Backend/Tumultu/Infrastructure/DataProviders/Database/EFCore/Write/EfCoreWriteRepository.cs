@@ -28,7 +28,7 @@ public abstract class EfCoreWriteRepository<TEntity, TId> : IWriteRepository<TEn
         Context.Set<TEntity>().Add(entity);
     }
 
-    public void InsertAll(IEnumerable<TEntity> entities)
+    public void InsertMany(IEnumerable<TEntity> entities)
     {
         Context.Set<TEntity>().AddRange(entities);
     }
@@ -38,7 +38,7 @@ public abstract class EfCoreWriteRepository<TEntity, TId> : IWriteRepository<TEn
         Context.Set<TEntity>().Remove(entity);
     }
 
-    public void DeleteAll(IEnumerable<TEntity> entities)
+    public void DeleteMany(IEnumerable<TEntity> entities)
     {
         Context.Set<TEntity>().RemoveRange(entities);
     }

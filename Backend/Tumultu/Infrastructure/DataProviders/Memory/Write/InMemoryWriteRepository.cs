@@ -10,7 +10,7 @@ public abstract class InMemoryWriteRepository<TEntity,TId> : IWriteRepository<TE
         InMemoryData<TEntity>.Data.Add(entity);
     }
 
-    public void InsertAll(IEnumerable<TEntity> entities)
+    public void InsertMany(IEnumerable<TEntity> entities)
     {
         InMemoryData<TEntity>.Data.AddRange(entities);
     }
@@ -20,7 +20,7 @@ public abstract class InMemoryWriteRepository<TEntity,TId> : IWriteRepository<TE
         InMemoryData<TEntity>.Data.Remove(entity);
     }
 
-    public void DeleteAll(IEnumerable<TEntity> entities)
+    public void DeleteMany(IEnumerable<TEntity> entities)
     {
         foreach (TEntity entity in entities)
         {
