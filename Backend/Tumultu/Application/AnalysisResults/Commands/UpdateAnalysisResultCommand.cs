@@ -1,6 +1,6 @@
 ﻿using Ardalis.GuardClauses;
 using MediatR;
-using Tumultu.Application.Interfaces.Common;
+using Tumultu.Application.Common.Interfaces;
 using Tumultu.Domain.Entities;
 
 namespace Tumultu.Application.AnalysisResults.Commands;
@@ -9,22 +9,24 @@ public record UpdateAnalysisResultCommand(Guid Id) : IRequest;
 
 public class UpdateAnalysisResultCommandHandler : IRequestHandler<UpdateAnalysisResultCommand>
 {
-    private readonly IApplicationDbContext _context;
+    private readonly IAnalysisResultReadRepository _readRepository;
+    private readonly IWriteRepository<AnalysisResult, Guid> _writeRepository;
 
-    public UpdateAnalysisResultCommandHandler(IApplicationDbContext context)
+    public UpdateAnalysisResultCommandHandler(IAnalysisResultReadRepository readRepository, IWriteRepository<AnalysisResult, Guid>  writeRepository)
     {
-        _context = context;
+        _readRepository = readRepository;
+        _writeRepository = writeRepository;
     }
 
     public async Task Handle(UpdateAnalysisResultCommand request, CancellationToken cancellationToken)
     {
-        AnalysisResult? entity = await _context.AnalysisResults
-            .FindAsync(new object[] { request.Id }, cancellationToken);
+        AnalysisResult? entity = await _readRepository.GetByIdAsync(request.Id);
 
         Guard.Against.NotFound(request.Id, entity);
 
         // change anything in entity
-
-        await _context.SaveChangesAsync(cancellationToken);
+        
+        _writeRepository.Update(entity);
+        await _writeRepository.SaveChangesAsync(cancellationToken);
     }
 }
