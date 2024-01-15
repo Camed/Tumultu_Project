@@ -1,6 +1,6 @@
 ﻿using Tumultu.Domain.Common;
 
-namespace Domain.ValueObjects;
+namespace Tumultu.Domain.ValueObjects;
 
 public class FileNote : ValueObject
 {

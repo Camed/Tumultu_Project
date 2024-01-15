@@ -1,5 +1,5 @@
-﻿using Domain.ValueObjects;
-using Tumultu.Domain.Common;
+﻿using Tumultu.Domain.Common;
+using Tumultu.Domain.ValueObjects;
 
 namespace Tumultu.Domain.Entities;
 
