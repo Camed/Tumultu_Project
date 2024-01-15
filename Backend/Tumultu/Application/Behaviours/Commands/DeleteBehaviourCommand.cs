@@ -1,6 +1,6 @@
 ﻿using Ardalis.GuardClauses;
 using MediatR;
-using Tumultu.Application.Interfaces.Common;
+using Tumultu.Application.Common.Interfaces;
 using Tumultu.Domain.Entities;
 using Tumultu.Domain.Events;
 
@@ -10,24 +10,25 @@ public record DeleteBehaviourCommand(int Id) : IRequest;
 
 public class DeleteBehaviourCommandHandler : IRequestHandler<DeleteBehaviourCommand>
 {
-    private readonly IApplicationDbContext _context;
+    private readonly IBehaviourReadRepository _readRepository;
+    private readonly IWriteRepository<Behaviour, int> _writeRepository;
 
-    public DeleteBehaviourCommandHandler(IApplicationDbContext context)
+    public DeleteBehaviourCommandHandler(IBehaviourReadRepository readRepository, IWriteRepository<Behaviour, int> writeRepository)
     {
-        _context = context;
+        _readRepository = readRepository;
+        _writeRepository = writeRepository;
     }
 
     public async Task Handle(DeleteBehaviourCommand request, CancellationToken cancellationToken)
     {
-        Behaviour? entity = await _context.Behaviours
-            .FindAsync(new object[] { request.Id }, cancellationToken);
+        Behaviour? entity = await _readRepository.GetByIdAsync(request.Id);
 
         Guard.Against.NotFound(request.Id, entity);
 
-        _context.Behaviours.Remove(entity);
+        _writeRepository.Delete(entity);
 
         entity.AddDomainEvent(new BehaviourDeletedEvent(entity));
 
-        await _context.SaveChangesAsync(cancellationToken);
+        await _writeRepository.SaveChangesAsync(cancellationToken);
     }
 }
