@@ -1,10 +1,11 @@
 ﻿using Tumultu.Domain.Extensions;
 using MediatR;
-using Tumultu.Application.Interfaces.Common;
+using Tumultu.Application.Common.Interfaces;
 using Tumultu.Domain.Entities;
 using Tumultu.Domain.Events;
 
 namespace Tumultu.Application.Files.Commands;
+
 public record CreateFileCommand : IRequest<Guid>
 {
     public string? FileName { get; init; }
@@ -13,20 +14,26 @@ public record CreateFileCommand : IRequest<Guid>
 
 public class CreateFileCommandHandler : IRequestHandler<CreateFileCommand, Guid>
 {
-    private readonly IApplicationDbContext _context;
+    private readonly IFilesReadRepository _readRepository;
+    private readonly IWriteRepository<FileEntity, Guid> _writeRepository;
 
-    public CreateFileCommandHandler(IApplicationDbContext context)
+    public CreateFileCommandHandler(IFilesReadRepository readRepository, IWriteRepository<FileEntity, Guid> writeRepository)
     {
-        _context = context;
+        _readRepository = readRepository;
+        _writeRepository = writeRepository;
     }
+
     public async Task<Guid> Handle(CreateFileCommand request, CancellationToken cancellationToken)
     {
-        var md5 = request.Payload.GetMD5();
-        var sha1 = request.Payload.GetSHA1();
-        var sha256 = request.Payload.GetSHA256();
+        string md5 = request.Payload.GetMD5();
+        string sha1 = request.Payload.GetSHA1();
+        string sha256 = request.Payload.GetSHA256();
+
+        IEnumerable<FileEntity> filesWithSameSignature = 
+            await _readRepository.GetAllByAnySignature(md5, sha1, sha256);
 
         // this file already exists
-        if(_context.Files.Any(x => x.MD5Signature == md5 || x.SHA1Signature == sha1 || x.SHA256Signature == sha256))
+        if (filesWithSameSignature.Any())
         {
             // handle file variant creation
             return Guid.Empty;
@@ -40,11 +47,11 @@ public class CreateFileCommandHandler : IRequestHandler<CreateFileCommand, Guid>
             Size = request.Payload.Length,
         };
 
+        _writeRepository.Insert(entity);
+
+        await _writeRepository.SaveChangesAsync(cancellationToken);
+
         entity.AddDomainEvent(new FileCreatedEvent(entity));
-
-        _context.Files.Add(entity);
-
-        await _context.SaveChangesAsync(cancellationToken);
 
         return entity.Id;
     }

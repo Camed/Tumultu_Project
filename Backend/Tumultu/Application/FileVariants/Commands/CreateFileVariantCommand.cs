@@ -1,5 +1,6 @@
 ﻿using MediatR;
-using Tumultu.Application.Interfaces.Common;
+using Tumultu.Application.Common.Interfaces;
+using Tumultu.Domain.Entities;
 
 namespace Tumultu.Application.FileVariants.Commands;
 
@@ -9,10 +10,11 @@ public record CreateFileVariantCommand : IRequest<Guid>
 
 public class CreateFileVariantCommandHander : IRequestHandler<CreateFileVariantCommand, Guid>
 {
-    private readonly IApplicationDbContext _context;
-    public CreateFileVariantCommandHander(IApplicationDbContext context)
+    private readonly IWriteRepository<FileVariant, Guid> _writeRepository;
+
+    public CreateFileVariantCommandHander(IWriteRepository<FileVariant, Guid> writeRepository)
     {
-        _context = context;
+        _writeRepository = writeRepository;
     }
 
     public Task<Guid> Handle(CreateFileVariantCommand request, CancellationToken cancellationToken)

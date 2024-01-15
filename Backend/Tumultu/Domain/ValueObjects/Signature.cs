@@ -1,7 +1,7 @@
-﻿using Tumultu.Domain.Enums;
-using Tumultu.Domain.Common;
+﻿using Tumultu.Domain.Common;
+using Tumultu.Domain.Enums;
 
-namespace Tumutlu.Domain.ValueObjects;
+namespace Tumultu.Domain.ValueObjects;
 
 public class Signature : ValueObject
 {

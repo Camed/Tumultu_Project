@@ -1,8 +1,9 @@
-﻿using MediatR;
-using System.Reflection;
+﻿using System.Reflection;
+using MediatR;
+using Microsoft.Extensions.DependencyInjection;
 using Tumultu.Application.Common.Behaviours;
 
-namespace Microsoft.Extensions.DependencyInjection;
+namespace Tumultu.Application;
 
 public static class DependencyInjection
 {

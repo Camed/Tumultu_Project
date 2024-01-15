@@ -1,42 +1,29 @@
 ﻿using Ardalis.GuardClauses;
-using Dapper;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
-using System.Data;
-using Tumultu.Application.Common.Interfaces;
-using Tumultu.Application.Interfaces.Common;
 using Tumultu.Domain.Entities;
 
 namespace Tumultu.Application.Files.Queries;
 
 public record GetFileByIdQuery : IRequest<FileEntity>
 {
-    public Guid Guid { get; init; }
+    public Guid Id { get; init; }
 }
 
 public class GetFileByIdQueryHandler : IRequestHandler<GetFileByIdQuery, FileEntity>
 {
-    private readonly IDBConnectionFactory _connectionFactory;
-    public GetFileByIdQueryHandler(IDBConnectionFactory connectionFactory)
+    private readonly IFilesReadRepository _repository;
+
+    public GetFileByIdQueryHandler(IFilesReadRepository repository)
     {
-        _connectionFactory = connectionFactory;
+        _repository = repository;
     }
 
     public async Task<FileEntity> Handle(GetFileByIdQuery request, CancellationToken cancellationToken)
     {
-       using IDbConnection connection = _connectionFactory.CreateOpenConnection();
-       const string sql =
-            """
-                SELECT f.Guid, f.Size, f.MD5Signature, f.SHA1Signature, f.SHA256Signature
-                FROM Files f
-                WHERE f.Guid = @Guid
-            """;
-       FileEntity? entity = await connection.QueryFirstOrDefaultAsync(
-                 sql,
-                 new { request.Guid }
-            );
+        FileEntity? entity = await _repository.GetByIdAsync(request.Id);
 
         Guard.Against.Null(entity);
+
         return entity;
     }
 }
