@@ -7,7 +7,7 @@ namespace Tumultu.Application.FileVariants.Queries;
 
 public record GetFileVariantsByFileQuery : IRequest<IEnumerable<FileVariant>>
 {
-    public FileEntity File { get; init; }
+    public FileEntity? File { get; init; }
 }
 
 public record GetFileVariantsByFileQueryHandler : IRequestHandler<GetFileVariantsByFileQuery, IEnumerable<FileVariant>>
@@ -21,7 +21,7 @@ public record GetFileVariantsByFileQueryHandler : IRequestHandler<GetFileVariant
     public async Task<IEnumerable<FileVariant>> Handle(GetFileVariantsByFileQuery request, CancellationToken cancellationToken)
     {
         IEnumerable<FileVariant> entities = (await _repository.GetAllAsync())
-                                                .Where(x => x.File?.Id == request.File.Id);
+                                                .Where(x => x.File?.Id == request.File?.Id);
 
         return entities;    
     }

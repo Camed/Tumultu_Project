@@ -8,7 +8,7 @@ namespace Tumultu.Application.FileVariants.Commands;
 
 public record CreateFileVariantCommand : IRequest<Guid>
 {
-    public FileEntity File { get; init; }
+    public FileEntity? File { get; init; }
     public DateTimeOffset? CreatedDate { get; init; }
     public DateTimeOffset? DateModified { get; init; }
     public string? Name { get; init; }
