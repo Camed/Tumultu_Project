@@ -23,8 +23,8 @@ public class CreateFileCommandValidator : AbstractValidator<CreateFileCommand>
 
 
         RuleFor(x => x.FileName)
-            .MaximumLength(settings.Common.MaximumFileNameLength)
             .NotNull()
-            .NotEmpty();
+            .NotEmpty()
+            .MaximumLength(settings.Common.MaximumFileNameLength);
     }
 }

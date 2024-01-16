@@ -7,6 +7,7 @@ public class UpdateFileCommandValidator : AbstractValidator<UpdateFileCommand>
     public UpdateFileCommandValidator()
     {
         RuleFor(x => x.Id)
+            .NotNull()
             .NotEmpty();
     }
 }
