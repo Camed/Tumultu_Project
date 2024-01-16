@@ -15,7 +15,7 @@ public class AnalysisResultDeletedEventHandler : INotificationHandler<AnalysisDe
 
     public Task Handle(AnalysisDeletedEvent notification, CancellationToken cancellationToken)
     {
-        _logger.LogInformation($"Domain event: File with id: {notification.Analysis.Id} has been deleted.");
+        _logger.LogInformation($"Domain event: Analysis with id: {notification.Analysis.Id} has been deleted.");
         return Task.CompletedTask;
     }
 }

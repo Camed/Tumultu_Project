@@ -15,7 +15,7 @@ public class AnalysisResultCreatedEventHandler : INotificationHandler<AnalysisCr
 
     public Task Handle(AnalysisCreatedEvent notification, CancellationToken cancellationToken)
     {
-        _logger.LogInformation($"Domain event: File with id: {notification.Analysis.Id} has been created.");
+        _logger.LogInformation($"Domain event: Analysis with id: {notification.Analysis.Id} has been created.");
         return Task.CompletedTask;
     }
 }
