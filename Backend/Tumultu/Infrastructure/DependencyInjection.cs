@@ -18,7 +18,7 @@ public static class DependencyInjection
         services.AddSingleton(typeof(IWriteRepository<,>), typeof(InMemoryWriteRepository<,>));
         
         //Specific read repos
-        services.AddSingleton<IFilesReadRepository, InMemoryFilesReadRepository>();
+        services.AddSingleton<IFilesReadOnlyRepository, InMemoryFilesReadRepository>();
         
         
         // //EF Core for writes, Dapper for reads

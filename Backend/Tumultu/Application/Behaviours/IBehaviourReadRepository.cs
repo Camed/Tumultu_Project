@@ -3,4 +3,4 @@ using Tumultu.Domain.Entities;
 
 namespace Tumultu.Application.Behaviours;
 
-public interface IBehaviourReadRepository : IReadRepository<Behaviour, int>;
+public interface IBehaviourReadRepository : IReadOnlyRepository<Behaviour, int>;

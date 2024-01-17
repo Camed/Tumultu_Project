@@ -1,6 +1,4 @@
 ﻿using MediatR;
-using Tumultu.Application.Common.Interfaces;
-using Tumultu.Application.Users.Queries;
 using Tumultu.Domain.Entities;
 using Tumultu.Domain.Events;
 
@@ -12,41 +10,32 @@ public record CreateFileVariantCommand : IRequest<Guid>
     public DateTimeOffset? CreatedDate { get; init; }
     public DateTimeOffset? DateModified { get; init; }
     public string? Name { get; init; }
-    public Guid? UploadedBy { get; init; }
+    public User? UploadedBy { get; init; }
 
 }
 
 public class CreateFileVariantCommandHandler : IRequestHandler<CreateFileVariantCommand, Guid>
 {
-    private readonly IWriteRepository<FileVariant, Guid> _writeRepository;
-    private readonly IReadRepository<FileVariant, Guid> _readRepository;
-    private readonly IMediator _mediator;
-    public CreateFileVariantCommandHandler(IWriteRepository<FileVariant, Guid> writeRepository,
-                                           IReadRepository<FileVariant, Guid> readRepository,
-                                           IMediator mediator)
+    private readonly IFileVariantsRepository _fileVariantsRepository;
+    public CreateFileVariantCommandHandler(IFileVariantsRepository fileVariantsRepository)
     {
-        _writeRepository = writeRepository;
-        _readRepository = readRepository;
-        _mediator = mediator;
+        _fileVariantsRepository = fileVariantsRepository;
     }
 
     public async Task<Guid> Handle(CreateFileVariantCommand request, CancellationToken cancellationToken)
     {
-        var userQuery = new GetUserByIdQuery { Id = request.UploadedBy ?? default };
-        var user = await _mediator.Send(userQuery);
-
         var entity = new FileVariant
         {
             Name = request.Name,
             CreationTime = request.CreatedDate ?? default,
             ModifiedTime = request.DateModified ?? default,
-            UploadedBy = user,
+            UploadedBy = request.UploadedBy,
             File = request.File
         };
 
-        _writeRepository.Insert(entity);
+        _fileVariantsRepository.Insert(entity);
 
-        await _writeRepository.SaveChangesAsync(cancellationToken);
+        await _fileVariantsRepository.SaveChangesAsync(cancellationToken);
         entity.AddDomainEvent(new FileVariantCreatedEvent(entity));
 
         return entity.Id;

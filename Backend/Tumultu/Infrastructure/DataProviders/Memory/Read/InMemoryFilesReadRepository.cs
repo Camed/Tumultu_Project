@@ -3,7 +3,7 @@ using Tumultu.Domain.Entities;
 
 namespace Tumultu.Infrastructure.DataProviders.Memory.Read;
 
-public class InMemoryFilesReadRepository : InMemoryReadRepository<FileEntity, Guid>, IFilesReadRepository
+public class InMemoryFilesReadRepository : InMemoryReadRepository<FileEntity, Guid>, IFilesReadOnlyRepository
 {
     public Task<IEnumerable<FileEntity>> GetAllByAnySignature(string? md5Signature, string? sha1Signature, string? sha256Signature)
     {

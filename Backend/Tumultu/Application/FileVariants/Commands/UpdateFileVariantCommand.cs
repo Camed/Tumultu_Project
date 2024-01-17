@@ -1,6 +1,5 @@
 ﻿using Ardalis.GuardClauses;
 using MediatR;
-using Tumultu.Application.Common.Interfaces;
 using Tumultu.Domain.Entities;
 
 namespace Tumultu.Application.FileVariants.Commands;
@@ -12,25 +11,22 @@ public record UpdateFileVariantCommand : IRequest
 
 public class UpdateFileVariantCommandHandler : IRequestHandler<UpdateFileVariantCommand>
 {
-    private readonly IReadRepository<FileVariant, Guid> _readRepository;
-    private readonly IWriteRepository<FileVariant, Guid> _writeRepository;
-
-    public UpdateFileVariantCommandHandler(IReadRepository<FileVariant, Guid> readRepository, IWriteRepository<FileVariant, Guid> writeRepository)
+    private readonly IFileVariantsRepository _fileVariantsRepository;
+    public UpdateFileVariantCommandHandler(IFileVariantsRepository fileVariantsRepository)
     {
-        _readRepository = readRepository;
-        _writeRepository = writeRepository;
+        _fileVariantsRepository = fileVariantsRepository;
     }
 
     public async Task Handle(UpdateFileVariantCommand request, CancellationToken cancellationToken)
     {
-        FileVariant? entity = await _readRepository.GetByIdAsync(request.Id);
+        FileVariant? entity = await _fileVariantsRepository.GetByIdAsync(request.Id);
 
         Guard.Against.NotFound(request.Id, entity);
 
         // change anything
 
-        _writeRepository.Update(entity);
+        _fileVariantsRepository.Update(entity);
 
-        await _writeRepository.SaveChangesAsync(cancellationToken);
+        await _fileVariantsRepository.SaveChangesAsync(cancellationToken);
     }
 }

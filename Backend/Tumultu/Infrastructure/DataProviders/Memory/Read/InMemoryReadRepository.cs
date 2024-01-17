@@ -4,7 +4,7 @@ using Tumultu.Domain.Common;
 
 namespace Tumultu.Infrastructure.DataProviders.Memory.Read;
 
-public abstract class InMemoryReadRepository<TEntity, TId> : IReadRepository<TEntity, TId> where TEntity: BaseEntity<TId>
+public abstract class InMemoryReadRepository<TEntity, TId> : IReadOnlyRepository<TEntity, TId> where TEntity: BaseEntity<TId>
 {
     public Task<IEnumerable<TEntity>> GetAllAsync()
     {

@@ -17,9 +17,9 @@ public record GetUserByIdQuery : IRequest<User>
 
 public class GetFileByIdQueryHandler : IRequestHandler<GetUserByIdQuery, User>
 {
-    private readonly IReadRepository<User, Guid> _repository;
+    private readonly IReadOnlyRepository<User, Guid> _repository;
 
-    public GetFileByIdQueryHandler(IReadRepository<User, Guid> repository)
+    public GetFileByIdQueryHandler(IReadOnlyRepository<User, Guid> repository)
     {
         _repository = repository;
     }

@@ -6,7 +6,7 @@ using Tumultu.Domain.Entities;
 
 namespace Tumultu.Infrastructure.DataProviders.Database.Dapper.Read;
 
-class DapperFilesReadRepository : IFilesReadRepository
+class DapperFilesReadRepository : IFilesReadOnlyRepository
 {
     private readonly IDapperDbContext _context;
 

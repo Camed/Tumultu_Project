@@ -1,6 +1,5 @@
 ﻿using Ardalis.GuardClauses;
 using MediatR;
-using Tumultu.Application.Common.Interfaces;
 using Tumultu.Domain.Entities;
 
 namespace Tumultu.Application.FileVariants.Queries;
@@ -12,8 +11,8 @@ public record GetFileVariantByIdQuery : IRequest<FileVariant>
 
 public class GetFileVariantByIdQueryHandler : IRequestHandler<GetFileVariantByIdQuery, FileVariant>
 {
-    private readonly IReadRepository<FileVariant, Guid> _repository;
-    public GetFileVariantByIdQueryHandler(IReadRepository<FileVariant, Guid> repository)
+    private readonly IFileVariantsReadOnlyRepository _repository;
+    public GetFileVariantByIdQueryHandler(IFileVariantsReadOnlyRepository repository)
     {
         _repository = repository;
     }

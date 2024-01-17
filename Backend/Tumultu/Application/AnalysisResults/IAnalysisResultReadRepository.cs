@@ -3,4 +3,4 @@ using Tumultu.Domain.Entities;
 
 namespace Tumultu.Application.AnalysisResults;
     
-public interface IAnalysisResultReadRepository : IReadRepository<AnalysisResult, Guid>;
+public interface IAnalysisResultReadRepository : IReadOnlyRepository<AnalysisResult, Guid>;
