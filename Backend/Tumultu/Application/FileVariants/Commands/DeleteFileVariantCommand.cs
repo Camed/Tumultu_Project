@@ -10,20 +10,20 @@ public record DeleteFileVariantCommand(Guid Id) : IRequest;
 
 public class DeleteFileVariantCommandHandler : IRequestHandler<DeleteFileVariantCommand>
 {
-    private readonly IFileVariantsRepository _fileVariantsRepository;
-    public DeleteFileVariantCommandHandler(IFileVariantsRepository fileVariantsRepository)
+    private readonly IFileVariantRepository _repository;
+    public DeleteFileVariantCommandHandler(IFileVariantRepository fileVariantRepository)
     {
-        _fileVariantsRepository = fileVariantsRepository;
+        _repository = fileVariantRepository;
     }
 
     public async Task Handle(DeleteFileVariantCommand request, CancellationToken cancellationToken)
     {
-        FileVariant? entity = await _fileVariantsRepository.GetByIdAsync(request.Id);
+        FileVariant? entity = await _repository.GetByIdAsync(request.Id);
         
         Guard.Against.NotFound(request.Id, entity);
-        _fileVariantsRepository.Delete(entity);
+        _repository.Delete(entity);
 
-        await _fileVariantsRepository.SaveChangesAsync(cancellationToken);
+        await _repository.SaveChangesAsync(cancellationToken);
         entity.AddDomainEvent(new FileVariantDeletedEvent(entity));
 
     }

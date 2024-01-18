@@ -10,25 +10,23 @@ public record DeleteBehaviourCommand(int Id) : IRequest;
 
 public class DeleteBehaviourCommandHandler : IRequestHandler<DeleteBehaviourCommand>
 {
-    private readonly IBehaviourReadRepository _readRepository;
-    private readonly IWriteRepository<Behaviour, int> _writeRepository;
+    private readonly IBehaviourRepository _repository;
 
-    public DeleteBehaviourCommandHandler(IBehaviourReadRepository readRepository, IWriteRepository<Behaviour, int> writeRepository)
+    public DeleteBehaviourCommandHandler(IBehaviourRepository behaviourRepository)
     {
-        _readRepository = readRepository;
-        _writeRepository = writeRepository;
+        _repository = behaviourRepository;
     }
 
     public async Task Handle(DeleteBehaviourCommand request, CancellationToken cancellationToken)
     {
-        Behaviour? entity = await _readRepository.GetByIdAsync(request.Id);
+        Behaviour? entity = await _repository.GetByIdAsync(request.Id);
 
         Guard.Against.NotFound(request.Id, entity);
 
-        _writeRepository.Delete(entity);
+        _repository.Delete(entity);
 
         entity.AddDomainEvent(new BehaviourDeletedEvent(entity));
 
-        await _writeRepository.SaveChangesAsync(cancellationToken);
+        await _repository.SaveChangesAsync(cancellationToken);
     }
 }

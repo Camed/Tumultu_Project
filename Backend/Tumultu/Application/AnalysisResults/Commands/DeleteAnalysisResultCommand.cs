@@ -10,25 +10,23 @@ public record DeleteAnalysisResultCommand(Guid Id) : IRequest;
 
 public class DeleteAnalysisResultCommandHandler : IRequestHandler<DeleteAnalysisResultCommand>
 {
-    private readonly IAnalysisResultReadRepository _readRepository;
-    private readonly IWriteRepository<AnalysisResult, Guid> _writeRepository;
+    private readonly IAnalysisResultRepository _repository;
 
-    public DeleteAnalysisResultCommandHandler(IAnalysisResultReadRepository readRepository, IWriteRepository<AnalysisResult, Guid>  writeRepository)
+    public DeleteAnalysisResultCommandHandler(IAnalysisResultRepository repository)
     {
-        _readRepository = readRepository;
-        _writeRepository = writeRepository;
+        _repository = repository;
     }
 
     public async Task Handle(DeleteAnalysisResultCommand request, CancellationToken token)
     {
-        AnalysisResult? entity = await _readRepository.GetByIdAsync(request.Id);
+        AnalysisResult? entity = await _repository.GetByIdAsync(request.Id);
 
         Guard.Against.NotFound(request.Id, entity);
 
-        _writeRepository.Delete(entity);
+        _repository.Delete(entity);
 
         entity.AddDomainEvent(new AnalysisDeletedEvent(entity));
 
-        await _writeRepository.SaveChangesAsync(token);
+        await _repository.SaveChangesAsync(token);
     }
 }

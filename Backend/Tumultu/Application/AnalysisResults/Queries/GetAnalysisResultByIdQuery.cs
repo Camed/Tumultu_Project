@@ -8,9 +8,9 @@ public record GetAnalysisResultByIdQuery(Guid Id) : IRequest<AnalysisResult>;
 
 public class GetAnalysisResultByIdQueryHandler : IRequestHandler<GetAnalysisResultByIdQuery, AnalysisResult>
 {
-    private readonly IAnalysisResultReadRepository _repository;
+    private readonly IAnalysisResultReadOnlyRepository _repository;
 
-    public GetAnalysisResultByIdQueryHandler(IAnalysisResultReadRepository repository)
+    public GetAnalysisResultByIdQueryHandler(IAnalysisResultReadOnlyRepository repository)
     {
         _repository = repository;
     }

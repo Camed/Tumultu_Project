@@ -3,7 +3,7 @@ using Tumultu.Domain.Entities;
 
 namespace Tumultu.Application.FileVariants;
 
-public interface IFileVariantsReadOnlyRepository : IReadOnlyRepository<FileVariant,  Guid>
+public interface IFileVariantReadOnlyRepository : IReadOnlyRepository<FileVariant,  Guid>
 {
     Task<IEnumerable<FileVariant>> GetAllFileVariantsByFile(FileEntity file);
 }

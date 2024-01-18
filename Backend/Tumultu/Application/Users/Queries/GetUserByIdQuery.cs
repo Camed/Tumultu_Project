@@ -17,14 +17,14 @@ public record GetUserByIdQuery : IRequest<User>
 
 public class GetFileByIdQueryHandler : IRequestHandler<GetUserByIdQuery, User>
 {
-    private readonly IReadOnlyRepository<User, Guid> _repository;
+    private readonly IUserReadOnlyRepository _repository;
 
-    public GetFileByIdQueryHandler(IReadOnlyRepository<User, Guid> repository)
+    public GetFileByIdQueryHandler(IUserReadOnlyRepository repository)
     {
         _repository = repository;
     }
 
-    public async Task<User> Handle(GetUserByIdQuery request, CancellationToken token)
+    public async Task<User> Handle(GetUserByIdQuery request, CancellationToken cancellationToken)
     {
         User? user = await _repository.GetByIdAsync(request.Id);
 

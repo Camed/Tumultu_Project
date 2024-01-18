@@ -8,13 +8,11 @@ public record CreateAnalysisResultCommand : IRequest<Guid>;
 
 public class CreateAnalysisResultCommandHandler : IRequestHandler<CreateAnalysisResultCommand, Guid>
 {
-    private readonly IAnalysisResultReadRepository _readRepository;
-    private readonly IWriteRepository<AnalysisResult, Guid> _writeRepository;
+    private readonly IAnalysisResultRepository _repository;
 
-    public CreateAnalysisResultCommandHandler(IAnalysisResultReadRepository readRepository, IWriteRepository<AnalysisResult, Guid>  writeRepository)
+    public CreateAnalysisResultCommandHandler(IAnalysisResultRepository repository)
     {
-        _readRepository = readRepository;
-        _writeRepository = writeRepository;
+        _repository = repository;
     }
 
     public Task<Guid> Handle(CreateAnalysisResultCommand request, CancellationToken cancellationToken)

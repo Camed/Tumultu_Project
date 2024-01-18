@@ -11,22 +11,22 @@ public record UpdateFileVariantCommand : IRequest
 
 public class UpdateFileVariantCommandHandler : IRequestHandler<UpdateFileVariantCommand>
 {
-    private readonly IFileVariantsRepository _fileVariantsRepository;
-    public UpdateFileVariantCommandHandler(IFileVariantsRepository fileVariantsRepository)
+    private readonly IFileVariantRepository _repository;
+    public UpdateFileVariantCommandHandler(IFileVariantRepository fileVariantRepository)
     {
-        _fileVariantsRepository = fileVariantsRepository;
+        _repository = fileVariantRepository;
     }
 
     public async Task Handle(UpdateFileVariantCommand request, CancellationToken cancellationToken)
     {
-        FileVariant? entity = await _fileVariantsRepository.GetByIdAsync(request.Id);
+        FileVariant? entity = await _repository.GetByIdAsync(request.Id);
 
         Guard.Against.NotFound(request.Id, entity);
 
         // change anything
 
-        _fileVariantsRepository.Update(entity);
+        _repository.Update(entity);
 
-        await _fileVariantsRepository.SaveChangesAsync(cancellationToken);
+        await _repository.SaveChangesAsync(cancellationToken);
     }
 }

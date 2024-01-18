@@ -3,6 +3,6 @@ using Tumultu.Domain.Entities;
 
 namespace Tumultu.Application.Files;
 
-public interface IFilesRepository : IFilesReadOnlyRepository, IWriteRepository<FileEntity, Guid>
+public interface IFileRepository : IFileReadOnlyRepository, IWriteRepository<FileEntity, Guid>
 {
 }

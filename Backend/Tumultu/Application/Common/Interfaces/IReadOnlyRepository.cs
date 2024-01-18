@@ -7,3 +7,5 @@ public interface IReadOnlyRepository<TEntity, TId> where TEntity : BaseEntity<TI
     Task<IEnumerable<TEntity>> GetAllAsync();
     Task<TEntity?> GetByIdAsync(TId id);
 }
+
+

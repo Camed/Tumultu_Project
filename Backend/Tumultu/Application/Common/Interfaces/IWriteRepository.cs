@@ -16,3 +16,6 @@ public interface IWriteRepository<TEntity, TId> where TEntity : BaseEntity<TId>
 
     Task SaveChangesAsync(CancellationToken cancellationToken);
 }
+
+
+

@@ -16,10 +16,10 @@ public record CreateFileVariantCommand : IRequest<Guid>
 
 public class CreateFileVariantCommandHandler : IRequestHandler<CreateFileVariantCommand, Guid>
 {
-    private readonly IFileVariantsRepository _fileVariantsRepository;
-    public CreateFileVariantCommandHandler(IFileVariantsRepository fileVariantsRepository)
+    private readonly IFileVariantRepository _repository;
+    public CreateFileVariantCommandHandler(IFileVariantRepository fileVariantRepository)
     {
-        _fileVariantsRepository = fileVariantsRepository;
+        _repository = fileVariantRepository;
     }
 
     public async Task<Guid> Handle(CreateFileVariantCommand request, CancellationToken cancellationToken)
@@ -33,9 +33,9 @@ public class CreateFileVariantCommandHandler : IRequestHandler<CreateFileVariant
             File = request.File
         };
 
-        _fileVariantsRepository.Insert(entity);
+        _repository.Insert(entity);
 
-        await _fileVariantsRepository.SaveChangesAsync(cancellationToken);
+        await _repository.SaveChangesAsync(cancellationToken);
         entity.AddDomainEvent(new FileVariantCreatedEvent(entity));
 
         return entity.Id;

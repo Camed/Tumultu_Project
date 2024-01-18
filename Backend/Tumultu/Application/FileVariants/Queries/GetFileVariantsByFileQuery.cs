@@ -11,8 +11,8 @@ public record GetFileVariantsByFileQuery : IRequest<IEnumerable<FileVariant>>
 
 public record GetFileVariantsByFileQueryHandler : IRequestHandler<GetFileVariantsByFileQuery, IEnumerable<FileVariant>>
 {
-    private readonly IFileVariantsReadOnlyRepository _repository;
-    public GetFileVariantsByFileQueryHandler(IFileVariantsReadOnlyRepository repository)
+    private readonly IFileVariantReadOnlyRepository _repository;
+    public GetFileVariantsByFileQueryHandler(IFileVariantReadOnlyRepository repository)
     {
         _repository = repository;
     }
