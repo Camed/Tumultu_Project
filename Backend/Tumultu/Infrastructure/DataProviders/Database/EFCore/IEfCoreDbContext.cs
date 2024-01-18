@@ -1,7 +1,6 @@
-namespace Tumultu.Infrastructure.DataProviders.Database.EFCore
+namespace Tumultu.Infrastructure.DataProviders.Database.EFCore;
+
+public interface IEfCoreDbContext 
 {
-    public interface IEfCoreDbContext 
-    {
         
-    }
 }

@@ -1,10 +1,8 @@
 using Microsoft.Extensions.DependencyInjection;
-using Tumultu.Application.Common.Interfaces;
 using Tumultu.Application.Files;
-using Tumultu.Infrastructure.DataProviders.Database.Dapper.Read;
-using Tumultu.Infrastructure.DataProviders.Database.EFCore.Write;
-using Tumultu.Infrastructure.DataProviders.Memory.Read;
-using Tumultu.Infrastructure.DataProviders.Memory.Write;
+using Tumultu.Infrastructure.DataProviders.Database.Dapper.Files;
+using Tumultu.Infrastructure.DataProviders.Database.EFCore.Files;
+using Tumultu.Infrastructure.DataProviders.Memory.Files;
 
 namespace Tumultu.Infrastructure;
 
@@ -13,20 +11,11 @@ public static class DependencyInjection
     public static void AddInfrastructure(this IServiceCollection services)
     {
         //In memory
+        services.AddSingleton<IFileReadOnlyRepository, InMemoryFileReadOnlyRepository>();
+        services.AddSingleton<IFileRepository, InMemoryFileRepository>();
+       
         
-        //Generic write repo
-        services.AddSingleton(typeof(IWriteRepository<,>), typeof(InMemoryWriteRepository<,>));
-        
-        //Specific read repos
-        services.AddSingleton<IFilesReadOnlyRepository, InMemoryFilesReadRepository>();
-        
-        
-        // //EF Core for writes, Dapper for reads
-        //
-        // //Generic write repo
-        // services.AddSingleton(typeof(IWriteRepository<,>), typeof(EfCoreWriteRepository<,>));
-        //
-        // //Specific read repos
-        // services.AddSingleton<IFilesReadRepository, DapperFilesReadRepository>();
+        // services.AddSingleton<IFileReadOnlyRepository, DapperFileReadRepository>();
+        // services.AddSingleton<IFileRepository, EfCoreFileRepository>();
     }
 }

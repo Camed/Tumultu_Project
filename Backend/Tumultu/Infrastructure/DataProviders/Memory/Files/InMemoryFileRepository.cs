@@ -1,11 +1,13 @@
 using Tumultu.Application.Files;
 using Tumultu.Domain.Entities;
+using Tumultu.Infrastructure.DataProviders.Memory.Common;
 
-namespace Tumultu.Infrastructure.DataProviders.Memory.Read;
+namespace Tumultu.Infrastructure.DataProviders.Memory.Files;
 
-public class InMemoryFilesReadRepository : InMemoryReadRepository<FileEntity, Guid>, IFilesReadOnlyRepository
+public class InMemoryFileRepository : InMemoryRepository<FileEntity, Guid>, IFileRepository
 {
-    public Task<IEnumerable<FileEntity>> GetAllByAnySignature(string? md5Signature, string? sha1Signature, string? sha256Signature)
+    public Task<IEnumerable<FileEntity>> GetAllByAnySignature(string? md5Signature, string? sha1Signature,
+        string? sha256Signature)
     {
         IEnumerable<FileEntity> filesWithSameSignature = InMemoryData<FileEntity>.Data.Where(file =>
             file.MD5Signature == md5Signature
@@ -15,3 +17,4 @@ public class InMemoryFilesReadRepository : InMemoryReadRepository<FileEntity, Gu
         return Task.FromResult<IEnumerable<FileEntity>>(filesWithSameSignature.ToList());
     }
 }
+

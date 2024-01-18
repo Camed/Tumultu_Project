@@ -2,9 +2,9 @@ using Ardalis.GuardClauses;
 using Tumultu.Application.Common.Interfaces;
 using Tumultu.Domain.Common;
 
-namespace Tumultu.Infrastructure.DataProviders.Memory.Read;
+namespace Tumultu.Infrastructure.DataProviders.Memory.Common;
 
-public abstract class InMemoryReadRepository<TEntity, TId> : IReadOnlyRepository<TEntity, TId> where TEntity: BaseEntity<TId>
+public abstract class InMemoryReadOnlyRepository<TEntity, TId> : IReadOnlyRepository<TEntity, TId> where TEntity : BaseEntity<TId>
 {
     public Task<IEnumerable<TEntity>> GetAllAsync()
     {
@@ -18,3 +18,4 @@ public abstract class InMemoryReadRepository<TEntity, TId> : IReadOnlyRepository
         return Task.FromResult(entity);
     }
 }
+

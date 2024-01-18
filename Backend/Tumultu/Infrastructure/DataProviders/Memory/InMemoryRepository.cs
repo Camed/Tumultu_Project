@@ -3,7 +3,7 @@ using Tumultu.Domain.Common;
 
 namespace Tumultu.Infrastructure.DataProviders.Memory.Write;
 
-public class InMemoryWriteRepository<TEntity, TId> : IWriteRepository<TEntity, TId> where TEntity : BaseEntity<TId>
+public class InMemoryRepository<TEntity, TId> : IWriteRepository<TEntity, TId> where TEntity : BaseEntity<TId>
 {
     public void Insert(TEntity entity)
     {
