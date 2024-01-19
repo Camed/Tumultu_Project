@@ -1,19 +1,19 @@
 ﻿using MediatR;
 using Microsoft.Extensions.Logging;
 
-namespace Tumultu.Application.Common.Behaviours
-{
-    public class UnhandledExceptionBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
-        where TRequest : notnull
-    {
-        private readonly ILogger<TRequest> _logger;
+namespace Tumultu.Application.Common.Behaviours;
 
-        public UnhandledExceptionBehaviour(ILogger<TRequest> logger)
-        {
+public class UnhandledExceptionBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
+    where TRequest : notnull
+{
+    private readonly ILogger<TRequest> _logger;
+
+    public UnhandledExceptionBehaviour(ILogger<TRequest> logger)
+    {
             _logger = logger;
         }
-        public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
-        {
+    public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
+    {
             try
             {
                 return await next();
@@ -27,5 +27,4 @@ namespace Tumultu.Application.Common.Behaviours
                 throw;
             }
         }
-    }
 }

@@ -8,11 +8,11 @@ public record GetBehaviourByIdQuery(int Id) : IRequest<Behaviour>;
 
 public class GetBehaviourByIdQueryHandler : IRequestHandler<GetBehaviourByIdQuery, Behaviour>
 {
-    private readonly IBehaviourReadRepository _repository;
+    private readonly IBehaviourReadOnlyRepository _repository;
 
-    public GetBehaviourByIdQueryHandler(IBehaviourReadRepository repository)
+    public GetBehaviourByIdQueryHandler(IBehaviourReadOnlyRepository onlyRepository)
     {
-        _repository = repository;
+        _repository = onlyRepository;
     }
 
     public async Task<Behaviour> Handle(GetBehaviourByIdQuery request, CancellationToken cancellationToken)

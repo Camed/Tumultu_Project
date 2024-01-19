@@ -9,24 +9,22 @@ public record UpdateAnalysisResultCommand(Guid Id) : IRequest;
 
 public class UpdateAnalysisResultCommandHandler : IRequestHandler<UpdateAnalysisResultCommand>
 {
-    private readonly IAnalysisResultReadRepository _readRepository;
-    private readonly IWriteRepository<AnalysisResult, Guid> _writeRepository;
+    private readonly IAnalysisResultRepository _repository;
 
-    public UpdateAnalysisResultCommandHandler(IAnalysisResultReadRepository readRepository, IWriteRepository<AnalysisResult, Guid>  writeRepository)
+    public UpdateAnalysisResultCommandHandler(IAnalysisResultRepository repository)
     {
-        _readRepository = readRepository;
-        _writeRepository = writeRepository;
+        _repository = repository;
     }
 
     public async Task Handle(UpdateAnalysisResultCommand request, CancellationToken cancellationToken)
     {
-        AnalysisResult? entity = await _readRepository.GetByIdAsync(request.Id);
+        AnalysisResult? entity = await _repository.GetByIdAsync(request.Id);
 
         Guard.Against.NotFound(request.Id, entity);
 
         // change anything in entity
         
-        _writeRepository.Update(entity);
-        await _writeRepository.SaveChangesAsync(cancellationToken);
+        _repository.Update(entity);
+        await _repository.SaveChangesAsync(cancellationToken);
     }
 }

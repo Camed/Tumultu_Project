@@ -11,9 +11,9 @@ public record GetFileByIdQuery : IRequest<FileEntity>
 
 public class GetFileByIdQueryHandler : IRequestHandler<GetFileByIdQuery, FileEntity>
 {
-    private readonly IFilesReadRepository _repository;
+    private readonly IFileReadOnlyRepository _repository;
 
-    public GetFileByIdQueryHandler(IFilesReadRepository repository)
+    public GetFileByIdQueryHandler(IFileReadOnlyRepository repository)
     {
         _repository = repository;
     }

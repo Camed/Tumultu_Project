@@ -1,9 +1,8 @@
-﻿namespace Tumultu.Domain.Constants
+﻿namespace Tumultu.Domain.Constants;
+
+public abstract class Roles
 {
-    public abstract class Roles
-    {
-        public const string Administrator = nameof(Administrator);
-        public const string User = nameof(User);
-        public const string Guest = nameof(Guest);
-    }
+    public const string Administrator = nameof(Administrator);
+    public const string User = nameof(User);
+    public const string Guest = nameof(Guest);
 }

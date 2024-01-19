@@ -8,13 +8,12 @@ public record CreateBehaviourCommand : IRequest<int>;
 
 public class CreateBehaviourCommandHandler : IRequestHandler<CreateBehaviourCommand, int>
 {
-    private readonly IBehaviourReadRepository _readRepository;
-    private readonly IWriteRepository<Behaviour, int> _writeRepository;
 
-    public CreateBehaviourCommandHandler(IBehaviourReadRepository readRepository, IWriteRepository<Behaviour, int> writeRepository)
+    private readonly IBehaviourRepository _repository;
+
+    public CreateBehaviourCommandHandler(IBehaviourRepository behaviourRepository)
     {
-        _readRepository = readRepository;
-        _writeRepository = writeRepository;
+        _repository = behaviourRepository;
     }
 
     public Task<int> Handle(CreateBehaviourCommand request, CancellationToken cancellationToken)
