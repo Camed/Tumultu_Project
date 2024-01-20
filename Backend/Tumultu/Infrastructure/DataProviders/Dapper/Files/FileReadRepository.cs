@@ -2,28 +2,26 @@ using System.Data;
 using Dapper;
 using Tumultu.Application.Files;
 using Tumultu.Domain.Entities;
+using Tumultu.Infrastructure.DataProviders.Dapper.Common;
 
-namespace Tumultu.Infrastructure.DataProviders.Database.Dapper.Files;
+namespace Tumultu.Infrastructure.DataProviders.Dapper.Files;
 
-class DapperFileReadRepository : IFileReadOnlyRepository
+internal class FileReadRepository : DapperRepositoryBase, IFileReadOnlyRepository
 {
-    private readonly IDapperDbContext _context;
-
-    public DapperFileReadRepository(IDapperDbContext context)
+    public FileReadRepository(IDbConnectionFactory connectionFactory) : base(connectionFactory)
     {
-        _context = context;
     }
 
     public async Task<IEnumerable<FileEntity>> GetAllAsync()
     {
-        using IDbConnection connection = _context.CreateConnection();
-        const string sql = "SELECT * FROM FileEnity";
+        using IDbConnection connection = ConnectionFactory.CreateConnection();
+        const string sql = "SELECT * FROM FileEntity";
         return await connection.QueryAsync<FileEntity>(sql);
     }
 
     public async Task<FileEntity?> GetByIdAsync(Guid id)
     {
-        using IDbConnection connection = _context.CreateConnection();
+        using IDbConnection connection = ConnectionFactory.CreateConnection();
         const string sql = """
                            SELECT * FROM FileEnity
                            WHERE Id = @id
@@ -33,7 +31,7 @@ class DapperFileReadRepository : IFileReadOnlyRepository
 
     public async Task<IEnumerable<FileEntity>> GetAllByAnySignature(string? md5Signature, string? sha1Signature, string? sha256Signature)
     {
-        using IDbConnection connection = _context.CreateConnection();
+        using IDbConnection connection = ConnectionFactory.CreateConnection();
         const string sql = """
                            SELECT * FROM FileEnity
                            WHERE md5_signature = @md5Signature 

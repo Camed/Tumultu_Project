@@ -2,13 +2,13 @@ using Microsoft.EntityFrameworkCore;
 using Tumultu.Application.Common.Interfaces;
 using Tumultu.Domain.Common;
 
-namespace Tumultu.Infrastructure.DataProviders.Database.EFCore;
+namespace Tumultu.Infrastructure.DataProviders.EFCore.Common;
 
-public class EfCoreRepository<TEntity, TId> : IReadOnlyRepository<TEntity, TId>, IWriteRepository<TEntity, TId> where TEntity : BaseEntity<TId>
+internal class EfCoreRepositoryBase<TEntity, TId> : IReadOnlyRepository<TEntity, TId>, IRepository<TEntity, TId> where TEntity : BaseEntity<TId>
 {
-    protected readonly DbContext Context;
+    protected readonly EfCoreDbContext Context;
 
-    protected EfCoreRepository(DbContext context)
+    protected EfCoreRepositoryBase(EfCoreDbContext context)
     {
         Context = context;
     }
