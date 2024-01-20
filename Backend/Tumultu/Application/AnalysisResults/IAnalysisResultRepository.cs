@@ -3,6 +3,6 @@ using Tumultu.Domain.Entities;
 
 namespace Tumultu.Application.AnalysisResults;
 
-public interface IAnalysisResultRepository : IAnalysisResultReadOnlyRepository, IWriteRepository<AnalysisResult, Guid>
+public interface IAnalysisResultRepository : IAnalysisResultReadOnlyRepository, IRepository<AnalysisResult, Guid>
 {
 }

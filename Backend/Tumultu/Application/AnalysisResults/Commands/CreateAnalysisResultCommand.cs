@@ -1,6 +1,4 @@
 ﻿using MediatR;
-using Tumultu.Application.Common.Interfaces;
-using Tumultu.Domain.Entities;
 
 namespace Tumultu.Application.AnalysisResults.Commands;
 
