@@ -1,5 +1,6 @@
 ﻿using Ardalis.GuardClauses;
 using MediatR;
+using Tumultu.Application.Common.Interfaces;
 using Tumultu.Domain.Entities;
 
 namespace Tumultu.Application.Behaviours.Commands;
@@ -9,10 +10,12 @@ public record UpdateBehaviourCommand(int Id) : IRequest;
 public class UpdateBehaviourCommandHandler : IRequestHandler<UpdateBehaviourCommand>
 {
     private readonly IBehaviourRepository _repository;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public UpdateBehaviourCommandHandler(IBehaviourRepository behaviourRepository)
+    public UpdateBehaviourCommandHandler(IBehaviourRepository behaviourRepository, IUnitOfWork unitOfWork)
     {
         _repository = behaviourRepository;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task Handle(UpdateBehaviourCommand request, CancellationToken cancellationToken)
@@ -24,6 +27,6 @@ public class UpdateBehaviourCommandHandler : IRequestHandler<UpdateBehaviourComm
         // change anything in entity
 
         _repository.Update(entity);
-        await _repository.SaveChangesAsync(cancellationToken);
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
     }
 }

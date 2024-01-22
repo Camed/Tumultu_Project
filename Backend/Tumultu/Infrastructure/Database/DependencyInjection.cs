@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Tumultu.Application.AnalysisResults;
 using Tumultu.Application.Behaviours;
+using Tumultu.Application.Common.Interfaces;
 using Tumultu.Application.Files;
 using Tumultu.Application.FileVariants;
 using Tumultu.Application.Users;
@@ -15,6 +16,7 @@ using Tumultu.Infrastructure.Database.Dapper.Repositories.Users;
 using Tumultu.Infrastructure.Database.EFCore;
 using Tumultu.Infrastructure.Database.EFCore.Repositories.AnalysisResults;
 using Tumultu.Infrastructure.Database.EFCore.Repositories.Behaviours;
+using Tumultu.Infrastructure.Database.EFCore.Repositories.Common;
 using Tumultu.Infrastructure.Database.EFCore.Repositories.Files;
 using Tumultu.Infrastructure.Database.EFCore.Repositories.FileVariants;
 using Tumultu.Infrastructure.Database.EFCore.Repositories.Users;
@@ -37,8 +39,10 @@ public static class DependencyInjection
 
         //EF Core
         services.AddDbContext<EfCoreDbContext>(
-            options => 
+            options =>
                 options.UseNpgsql(configuration.GetConnectionString("SqlConnection")));
+        
+        services.AddScoped<IUnitOfWork, EfCoreUnitOfWork>();
 
         services.AddScoped<IAnalysisResultRepository, AnalysisResultRepository>();
         services.AddScoped<IBehaviourRepository, BehaviourRepository>();

@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Tumultu.Application.Common.Exceptions;
+using Tumultu.Application.Common.Interfaces;
 using Tumultu.Domain.Entities;
 using Tumultu.Domain.Events;
 
@@ -17,10 +18,12 @@ public record CreateUserCommand : IRequest<Guid>
 public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Guid>
 {
     private readonly IUserRepository _repository;
+    private readonly IUnitOfWork _unitOfWork;
     
-    public CreateUserCommandHandler(IUserRepository fileRepository)
+    public CreateUserCommandHandler(IUserRepository fileRepository, IUnitOfWork unitOfWork)
     {
         _repository = fileRepository;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<Guid> Handle(CreateUserCommand request, CancellationToken cancellationToken)
@@ -49,7 +52,7 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Guid>
 
         _repository.Insert(user);
 
-        await _repository.SaveChangesAsync(cancellationToken);
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         user.AddDomainEvent(new UserCreatedEvent(user));
 

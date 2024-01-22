@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Tumultu.Application.Common.Interfaces;
 using Tumultu.Domain.Entities;
 using Tumultu.Domain.Events;
 
@@ -17,9 +18,12 @@ public record CreateFileVariantCommand : IRequest<Guid>
 public class CreateFileVariantCommandHandler : IRequestHandler<CreateFileVariantCommand, Guid>
 {
     private readonly IFileVariantRepository _repository;
-    public CreateFileVariantCommandHandler(IFileVariantRepository fileVariantRepository)
+    private readonly IUnitOfWork _unitOfWork;
+    
+    public CreateFileVariantCommandHandler(IFileVariantRepository fileVariantRepository, IUnitOfWork unitOfWork)
     {
         _repository = fileVariantRepository;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<Guid> Handle(CreateFileVariantCommand request, CancellationToken cancellationToken)
@@ -35,7 +39,7 @@ public class CreateFileVariantCommandHandler : IRequestHandler<CreateFileVariant
 
         _repository.Insert(entity);
 
-        await _repository.SaveChangesAsync(cancellationToken);
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
         entity.AddDomainEvent(new FileVariantCreatedEvent(entity));
 
         return entity.Id;

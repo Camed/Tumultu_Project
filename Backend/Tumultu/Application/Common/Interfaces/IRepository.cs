@@ -13,8 +13,6 @@ public interface IRepository<TEntity, TId> : IReadOnlyRepository<TEntity, TId> w
     void DeleteMany(IEnumerable<TEntity> entities);
 
     void Update(TEntity entity);
-
-    Task SaveChangesAsync(CancellationToken cancellationToken);
 }
 
 

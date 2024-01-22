@@ -1,5 +1,6 @@
 ﻿using Ardalis.GuardClauses;
 using MediatR;
+using Tumultu.Application.Common.Interfaces;
 using Tumultu.Domain.Entities;
 using Tumultu.Domain.Events;
 
@@ -10,10 +11,12 @@ public record DeleteBehaviourCommand(int Id) : IRequest;
 public class DeleteBehaviourCommandHandler : IRequestHandler<DeleteBehaviourCommand>
 {
     private readonly IBehaviourRepository _repository;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public DeleteBehaviourCommandHandler(IBehaviourRepository behaviourRepository)
+    public DeleteBehaviourCommandHandler(IBehaviourRepository behaviourRepository, IUnitOfWork unitOfWork)
     {
         _repository = behaviourRepository;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task Handle(DeleteBehaviourCommand request, CancellationToken cancellationToken)
@@ -26,6 +29,6 @@ public class DeleteBehaviourCommandHandler : IRequestHandler<DeleteBehaviourComm
 
         entity.AddDomainEvent(new BehaviourDeletedEvent(entity));
 
-        await _repository.SaveChangesAsync(cancellationToken);
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
     }
 }

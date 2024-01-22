@@ -1,5 +1,6 @@
 ﻿using Ardalis.GuardClauses;
 using MediatR;
+using Tumultu.Application.Common.Interfaces;
 using Tumultu.Domain.Entities;
 
 namespace Tumultu.Application.FileVariants.Commands;
@@ -12,9 +13,12 @@ public record UpdateFileVariantCommand : IRequest
 public class UpdateFileVariantCommandHandler : IRequestHandler<UpdateFileVariantCommand>
 {
     private readonly IFileVariantRepository _repository;
-    public UpdateFileVariantCommandHandler(IFileVariantRepository fileVariantRepository)
+    private readonly IUnitOfWork _unitOfWork;
+    
+    public UpdateFileVariantCommandHandler(IFileVariantRepository fileVariantRepository, IUnitOfWork unitOfWork)
     {
         _repository = fileVariantRepository;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task Handle(UpdateFileVariantCommand request, CancellationToken cancellationToken)
@@ -27,6 +31,6 @@ public class UpdateFileVariantCommandHandler : IRequestHandler<UpdateFileVariant
 
         _repository.Update(entity);
 
-        await _repository.SaveChangesAsync(cancellationToken);
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
     }
 }

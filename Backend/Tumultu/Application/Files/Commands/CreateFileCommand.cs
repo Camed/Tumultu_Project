@@ -1,5 +1,6 @@
 ﻿using Tumultu.Domain.Extensions;
 using MediatR;
+using Tumultu.Application.Common.Interfaces;
 using Tumultu.Domain.Entities;
 using Tumultu.Domain.Events;
 
@@ -14,9 +15,12 @@ public record CreateFileCommand : IRequest<Guid>
 public class CreateFileCommandHandler : IRequestHandler<CreateFileCommand, Guid>
 {
     private readonly IFileRepository _repository;
-    public CreateFileCommandHandler(IFileRepository fileRepository)
+    private readonly IUnitOfWork _unitOfWork;
+    
+    public CreateFileCommandHandler(IFileRepository fileRepository, IUnitOfWork unitOfWork)
     {
         _repository = fileRepository;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<Guid> Handle(CreateFileCommand request, CancellationToken cancellationToken)
@@ -45,7 +49,7 @@ public class CreateFileCommandHandler : IRequestHandler<CreateFileCommand, Guid>
 
         _repository.Insert(entity);
 
-        await _repository.SaveChangesAsync(cancellationToken);
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         entity.AddDomainEvent(new FileCreatedEvent(entity));
 

@@ -1,5 +1,6 @@
 ﻿using Ardalis.GuardClauses;
 using MediatR;
+using Tumultu.Application.Common.Interfaces;
 using Tumultu.Domain.Entities;
 
 namespace Tumultu.Application.AnalysisResults.Commands;
@@ -9,10 +10,12 @@ public record UpdateAnalysisResultCommand(Guid Id) : IRequest;
 public class UpdateAnalysisResultCommandHandler : IRequestHandler<UpdateAnalysisResultCommand>
 {
     private readonly IAnalysisResultRepository _repository;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public UpdateAnalysisResultCommandHandler(IAnalysisResultRepository repository)
+    public UpdateAnalysisResultCommandHandler(IAnalysisResultRepository repository, IUnitOfWork unitOfWork)
     {
         _repository = repository;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task Handle(UpdateAnalysisResultCommand request, CancellationToken cancellationToken)
@@ -24,6 +27,7 @@ public class UpdateAnalysisResultCommandHandler : IRequestHandler<UpdateAnalysis
         // change anything in entity
         
         _repository.Update(entity);
-        await _repository.SaveChangesAsync(cancellationToken);
+        
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
     }
 }

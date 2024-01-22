@@ -47,9 +47,4 @@ internal class EfCoreRepositoryBase<TEntity, TId> : IRepository<TEntity, TId> wh
     {
         Context.Set<TEntity>().Update(entity);
     }
-
-    public Task SaveChangesAsync(CancellationToken cancellationToken)
-    {
-        return Context.SaveChangesAsync(cancellationToken);
-    }
 }
