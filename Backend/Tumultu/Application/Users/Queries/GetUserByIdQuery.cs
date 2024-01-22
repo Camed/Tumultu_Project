@@ -9,11 +9,11 @@ public record GetUserByIdQuery : IRequest<User>
     public Guid Id { get; init; }
 }
 
-public class GetFileByIdQueryHandler : IRequestHandler<GetUserByIdQuery, User>
+public class GetUserByIdQueryHandler : IRequestHandler<GetUserByIdQuery, User>
 {
     private readonly IUserReadOnlyRepository _repository;
 
-    public GetFileByIdQueryHandler(IUserReadOnlyRepository repository)
+    public GetUserByIdQueryHandler(IUserReadOnlyRepository repository)
     {
         _repository = repository;
     }
