@@ -31,7 +31,7 @@ internal abstract class DapperRepositoryBase<TEntity,TId> : IReadOnlyRepository<
         using IDbConnection connection = ConnectionFactory.CreateConnection();
         var sql = $"""
                    SELECT * FROM "{TableName}"
-                   WHERE Id = @id
+                   WHERE "Id" = @id
                    """;
         return await connection.QuerySingleOrDefaultAsync<TEntity?>(sql, new { id });
     }

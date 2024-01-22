@@ -18,9 +18,9 @@ internal class FileReadRepository : DapperRepositoryBase<FileEntity, Guid>, IFil
         using IDbConnection connection = ConnectionFactory.CreateConnection();
         var sql = $"""
                    SELECT * FROM "{TableName}"
-                   WHERE MD5Signature = @md5Signature
-                   OR SHA1Signature = @sha1Signature
-                   OR SHA256Signature = @sha256Signature
+                   WHERE "MD5Signature" = @md5Signature
+                   OR "SHA1Signature" = @sha1Signature
+                   OR "SHA256Signature" = @sha256Signature
                    """;
         return await connection.QueryAsync<FileEntity>(sql, new { md5Signature, sha1Signature, sha256Signature });
     }

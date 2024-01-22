@@ -18,7 +18,7 @@ internal class FileVariantReadOnlyRepository : DapperRepositoryBase<FileVariant,
         using IDbConnection connection = ConnectionFactory.CreateConnection();
         var sql = $"""
                    SELECT * FROM "{TableName}"
-                   WHERE FileId = @FileId;
+                   WHERE "FileId" = @FileId;
                    """;
         return await connection.QueryAsync<FileVariant>(sql, new { FileId = file.Id });
     }

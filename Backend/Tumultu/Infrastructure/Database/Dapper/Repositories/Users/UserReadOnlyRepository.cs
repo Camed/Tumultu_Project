@@ -18,7 +18,7 @@ internal class UserReadOnlyRepository : DapperRepositoryBase<User, Guid>, IUserR
         using IDbConnection connection = ConnectionFactory.CreateConnection();
         var sql = $"""
                    SELECT * FROM "{TableName}"
-                   WHERE Username = @username
+                   WHERE "Username" = @username
                    """;
         return await connection.QuerySingleOrDefaultAsync<User?>(sql, new { username });
     }
