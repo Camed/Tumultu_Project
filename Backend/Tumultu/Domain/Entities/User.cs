@@ -14,6 +14,6 @@ public class User : BaseEntity<Guid>
     public string? RegistrationDate { get; set; }
     public string? LastLoginDate { get; set; }
     public string? EmailVerificationDate { get; set; }
-    public bool IsActive { get; set; } = false;
-    public IEnumerable<FileNote>? Notes { get; set; }
+    public bool IsActive { get; set; }
+    public IEnumerable<FileNote> Notes { get; set; } = [];
 }

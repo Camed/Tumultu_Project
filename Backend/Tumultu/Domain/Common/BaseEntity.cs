@@ -12,7 +12,7 @@ public abstract class BaseEntity<T>
     public T Id { get; set; }
 #pragma warning restore CS8618
 
-    private readonly List<BaseEvent> _events = new();
+    private readonly List<BaseEvent> _events = [];
 
     [NotMapped]
     public IReadOnlyCollection<BaseEvent> DomainEvents => _events.AsReadOnly();
