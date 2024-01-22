@@ -3,7 +3,7 @@ using Tumultu.Domain.Entities;
 
 namespace Tumultu.Domain.Events;
 
-public class BehaviourCreatedEvent : BaseEvent
+public sealed class BehaviourCreatedEvent : BaseEvent
 {
     public BehaviourCreatedEvent(Behaviour behaviour)
     {

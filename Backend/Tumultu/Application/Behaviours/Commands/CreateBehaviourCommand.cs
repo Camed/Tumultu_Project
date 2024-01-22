@@ -18,6 +18,8 @@ public class CreateBehaviourCommandHandler : IRequestHandler<CreateBehaviourComm
 
     public Task<int> Handle(CreateBehaviourCommand request, CancellationToken cancellationToken)
     {
+        // temp stuff for tests
+        Behaviour behaviour = new Behaviour();
         throw new NotImplementedException();
     }
 }

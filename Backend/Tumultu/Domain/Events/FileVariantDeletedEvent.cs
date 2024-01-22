@@ -2,7 +2,7 @@
 using Tumultu.Domain.Entities;
 
 namespace Tumultu.Domain.Events;
-public class FileVariantDeletedEvent : BaseEvent
+public sealed class FileVariantDeletedEvent : BaseEvent
 {
     public FileVariantDeletedEvent(FileVariant fileVariant)
     {
