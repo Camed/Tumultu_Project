@@ -1,5 +1,6 @@
 ﻿using Tumultu.Domain.Extensions;
 using MediatR;
+using Tumultu.Application.Common.Interfaces;
 using Tumultu.Domain.Entities;
 using Tumultu.Domain.Events;
 
@@ -16,9 +17,9 @@ public class CreateFileCommandHandler : IRequestHandler<CreateFileCommand, Guid>
     private readonly IFileRepository _repository;
     private readonly IUnitOfWork _unitOfWork;
     
-    public CreateFileCommandHandler(IFileRepository fileRepository, IUnitOfWork unitOfWork)
+    public CreateFileCommandHandler(IFileRepository repository, IUnitOfWork unitOfWork)
     {
-        _repository = fileRepository;
+        _repository = repository;
         _unitOfWork = unitOfWork;
     }
 

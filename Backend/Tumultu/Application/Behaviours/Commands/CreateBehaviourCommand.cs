@@ -12,9 +12,9 @@ public class CreateBehaviourCommandHandler : IRequestHandler<CreateBehaviourComm
     private readonly IBehaviourRepository _repository;
     private readonly IUnitOfWork _unitOfWork;
 
-    public CreateBehaviourCommandHandler(IBehaviourRepository behaviourRepository, IUnitOfWork unitOfWork)
+    public CreateBehaviourCommandHandler(IBehaviourRepository repository, IUnitOfWork unitOfWork)
     {
-        _repository = behaviourRepository;
+        _repository = repository;
         _unitOfWork = unitOfWork;
     }
 

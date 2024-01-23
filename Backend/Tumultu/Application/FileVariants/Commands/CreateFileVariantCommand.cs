@@ -20,9 +20,9 @@ public class CreateFileVariantCommandHandler : IRequestHandler<CreateFileVariant
     private readonly IFileVariantRepository _repository;
     private readonly IUnitOfWork _unitOfWork;
     
-    public CreateFileVariantCommandHandler(IFileVariantRepository fileVariantRepository, IUnitOfWork unitOfWork)
+    public CreateFileVariantCommandHandler(IFileVariantRepository repository, IUnitOfWork unitOfWork)
     {
-        _repository = fileVariantRepository;
+        _repository = repository;
         _unitOfWork = unitOfWork;
     }
 

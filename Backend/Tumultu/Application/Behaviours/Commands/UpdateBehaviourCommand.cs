@@ -1,5 +1,6 @@
 ﻿using Ardalis.GuardClauses;
 using MediatR;
+using Tumultu.Application.Common.Interfaces;
 using Tumultu.Domain.Entities;
 
 namespace Tumultu.Application.Behaviours.Commands;
@@ -11,9 +12,9 @@ public class UpdateBehaviourCommandHandler : IRequestHandler<UpdateBehaviourComm
     private readonly IBehaviourRepository _repository;
     private readonly IUnitOfWork _unitOfWork;
 
-    public UpdateBehaviourCommandHandler(IBehaviourRepository behaviourRepository, IUnitOfWork unitOfWork)
+    public UpdateBehaviourCommandHandler(IBehaviourRepository repository, IUnitOfWork unitOfWork)
     {
-        _repository = behaviourRepository;
+        _repository = repository;
         _unitOfWork = unitOfWork;
     }
 

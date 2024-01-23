@@ -1,5 +1,6 @@
 ﻿using Ardalis.GuardClauses;
 using MediatR;
+using Tumultu.Application.Common.Interfaces;
 using Tumultu.Domain.Entities;
 
 namespace Tumultu.Application.Files.Commands;
@@ -14,9 +15,9 @@ public class UpdateFileCommandHandler : IRequestHandler<UpdateFileCommand>
     private readonly IFileRepository _repository;
     private readonly IUnitOfWork _unitOfWork;
 
-    public UpdateFileCommandHandler(IFileRepository fileRepository, IUnitOfWork unitOfWork)
+    public UpdateFileCommandHandler(IFileRepository repository, IUnitOfWork unitOfWork)
     {
-        _repository = fileRepository;
+        _repository = repository;
         _unitOfWork = unitOfWork;
     }
 

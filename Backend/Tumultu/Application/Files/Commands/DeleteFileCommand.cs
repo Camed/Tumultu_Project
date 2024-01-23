@@ -1,5 +1,6 @@
 ﻿using Ardalis.GuardClauses;
 using MediatR;
+using Tumultu.Application.Common.Interfaces;
 using Tumultu.Domain.Entities;
 using Tumultu.Domain.Events;
 
@@ -12,9 +13,9 @@ public class DeleteFileCommandHandler : IRequestHandler<DeleteFileCommand>
     private readonly IFileRepository _repository;
     private readonly IUnitOfWork _unitOfWork;
 
-    public DeleteFileCommandHandler(IFileRepository fileRepository, IUnitOfWork unitOfWork)
+    public DeleteFileCommandHandler(IFileRepository repository, IUnitOfWork unitOfWork)
     {
-        _repository = fileRepository;
+        _repository = repository;
         _unitOfWork = unitOfWork;
     }
 
