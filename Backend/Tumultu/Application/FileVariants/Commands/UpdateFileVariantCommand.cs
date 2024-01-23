@@ -15,9 +15,9 @@ public class UpdateFileVariantCommandHandler : IRequestHandler<UpdateFileVariant
     private readonly IFileVariantRepository _repository;
     private readonly IUnitOfWork _unitOfWork;
     
-    public UpdateFileVariantCommandHandler(IFileVariantRepository fileVariantRepository, IUnitOfWork unitOfWork)
+    public UpdateFileVariantCommandHandler(IFileVariantRepository repository, IUnitOfWork unitOfWork)
     {
-        _repository = fileVariantRepository;
+        _repository = repository;
         _unitOfWork = unitOfWork;
     }
 

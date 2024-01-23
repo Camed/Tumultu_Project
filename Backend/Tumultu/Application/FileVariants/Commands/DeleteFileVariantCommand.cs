@@ -14,9 +14,9 @@ public class DeleteFileVariantCommandHandler : IRequestHandler<DeleteFileVariant
     private readonly IFileVariantRepository _repository;
     private readonly IUnitOfWork _unitOfWork;
     
-    public DeleteFileVariantCommandHandler(IFileVariantRepository fileVariantRepository, IUnitOfWork unitOfWork)
+    public DeleteFileVariantCommandHandler(IFileVariantRepository repository, IUnitOfWork unitOfWork)
     {
-        _repository = fileVariantRepository;
+        _repository = repository;
         _unitOfWork = unitOfWork;
     }
 

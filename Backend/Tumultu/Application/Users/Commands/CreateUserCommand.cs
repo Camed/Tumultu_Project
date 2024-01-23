@@ -20,9 +20,9 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Guid>
     private readonly IUserRepository _repository;
     private readonly IUnitOfWork _unitOfWork;
     
-    public CreateUserCommandHandler(IUserRepository fileRepository, IUnitOfWork unitOfWork)
+    public CreateUserCommandHandler(IUserRepository repository, IUnitOfWork unitOfWork)
     {
-        _repository = fileRepository;
+        _repository = repository;
         _unitOfWork = unitOfWork;
     }
 
