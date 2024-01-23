@@ -37,7 +37,7 @@ public class ArchitectureTests
     }
 
     [Fact]
-    public void Application_Should_NotHaveDependencyOnOtherProjects()
+    public void Application_Should_HaveDependenciesOnlyOnDomainLayer()
     {
         // Arrange
         var applicationAssembly = _assemblies[Application];
@@ -54,7 +54,7 @@ public class ArchitectureTests
     }
 
     [Fact]
-    public void Infrastructure_Should_NotHaveDependencyOnOtherProjects()
+    public void Infrastructure_Should_HaveDependenciesOnlyOnDomainAndInfrastructureLayer()
     {
         // Arrange 
         var infrastructureAssembly = _assemblies[Infrastructure];
