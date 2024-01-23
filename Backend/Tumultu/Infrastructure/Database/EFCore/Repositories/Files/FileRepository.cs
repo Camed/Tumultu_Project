@@ -1,12 +1,13 @@
 using Microsoft.EntityFrameworkCore;
 using Tumultu.Application.Files;
 using Tumultu.Domain.Entities;
+using Tumultu.Infrastructure.Database.EFCore.Repositories.Common;
 
-namespace Tumultu.Infrastructure.DataProviders.Database.EFCore.Files;
+namespace Tumultu.Infrastructure.Database.EFCore.Repositories.Files;
 
-public class EfCoreFileRepository : EfCoreRepository<FileEntity, Guid>, IFileRepository
+internal class FileRepository : EfCoreRepositoryBase<FileEntity, Guid>, IFileRepository
 {
-    protected EfCoreFileRepository(DbContext context) : base(context)
+    public FileRepository(EfCoreDbContext context) : base(context)
     {
     }
 

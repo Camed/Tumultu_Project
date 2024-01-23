@@ -11,10 +11,12 @@ public record DeleteFileCommand(Guid Id) : IRequest;
 public class DeleteFileCommandHandler : IRequestHandler<DeleteFileCommand>
 {
     private readonly IFileRepository _repository;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public DeleteFileCommandHandler(IFileRepository fileRepository)
+    public DeleteFileCommandHandler(IFileRepository fileRepository, IUnitOfWork unitOfWork)
     {
         _repository = fileRepository;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task Handle(DeleteFileCommand request, CancellationToken cancellationToken)
@@ -24,7 +26,7 @@ public class DeleteFileCommandHandler : IRequestHandler<DeleteFileCommand>
 
         _repository.Delete(entity);
 
-        await _repository.SaveChangesAsync(cancellationToken);
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         entity.AddDomainEvent(new FileDeletedEvent(entity));
     }

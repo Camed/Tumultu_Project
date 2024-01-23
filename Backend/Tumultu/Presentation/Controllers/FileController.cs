@@ -15,19 +15,19 @@ public class FilesController : ControllerBase
 
     public FilesController(ILogger<FilesController> logger, IMediator mediator)
     {
-            _logger = logger;
-            _mediator = mediator;
-        }
+        _logger = logger;
+        _mediator = mediator;
+    }
 
     [HttpGet(Name = "GetFiles")]
     public Task<IEnumerable<FileEntity>> GetFiles()
     {
-            return _mediator.Send(new GetFilesQuery());
-        }
+        return _mediator.Send(new GetFilesQuery());
+    }
 
     [HttpPost(Name = "CreateFile")]
     public Task<Guid> AddFile(CreateFileCommand command)
     {
-            return _mediator.Send(command);
-        }
+        return _mediator.Send(command);
+    }
 }

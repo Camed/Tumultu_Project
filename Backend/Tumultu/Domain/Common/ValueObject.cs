@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-
-namespace Tumultu.Domain.Common;
+﻿namespace Tumultu.Domain.Common;
 
 /// <summary>
 /// Value object created with Microsoft guidelines.

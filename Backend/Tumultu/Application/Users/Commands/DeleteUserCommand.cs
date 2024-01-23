@@ -1,5 +1,6 @@
 ﻿using Ardalis.GuardClauses;
 using MediatR;
+using Tumultu.Application.Common.Interfaces;
 using Tumultu.Domain.Entities;
 using Tumultu.Domain.Events;
 
@@ -10,10 +11,12 @@ public record DeleteUserCommand(Guid Id) : IRequest;
 public class DeleteUserCommandHandler : IRequestHandler<DeleteUserCommand>
 {
     private readonly IUserRepository _repository;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public DeleteUserCommandHandler(IUserRepository repository)
+    public DeleteUserCommandHandler(IUserRepository repository, IUnitOfWork unitOfWork)
     {
         _repository = repository;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task Handle(DeleteUserCommand request, CancellationToken cancellationToken)
@@ -23,7 +26,7 @@ public class DeleteUserCommandHandler : IRequestHandler<DeleteUserCommand>
 
         _repository.Delete(entity);
 
-        await _repository.SaveChangesAsync(cancellationToken);
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         entity.AddDomainEvent(new UserDeletedEvent(entity));
     }

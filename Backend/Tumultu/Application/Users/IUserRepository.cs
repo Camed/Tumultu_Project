@@ -3,6 +3,6 @@ using Tumultu.Domain.Entities;
 
 namespace Tumultu.Application.Users;
 
-public interface IUserRepository : IUserReadOnlyRepository, IWriteRepository<User, Guid>
+public interface IUserRepository : IUserReadOnlyRepository, IRepository<User, Guid>
 {
 }

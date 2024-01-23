@@ -11,13 +11,15 @@ public record DeleteAnalysisResultCommand(Guid Id) : IRequest;
 public class DeleteAnalysisResultCommandHandler : IRequestHandler<DeleteAnalysisResultCommand>
 {
     private readonly IAnalysisResultRepository _repository;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public DeleteAnalysisResultCommandHandler(IAnalysisResultRepository repository)
+    public DeleteAnalysisResultCommandHandler(IAnalysisResultRepository repository, IUnitOfWork unitOfWork)
     {
         _repository = repository;
+        _unitOfWork = unitOfWork;
     }
 
-    public async Task Handle(DeleteAnalysisResultCommand request, CancellationToken token)
+    public async Task Handle(DeleteAnalysisResultCommand request, CancellationToken cancellationToken)
     {
         AnalysisResult? entity = await _repository.GetByIdAsync(request.Id);
 
@@ -27,6 +29,6 @@ public class DeleteAnalysisResultCommandHandler : IRequestHandler<DeleteAnalysis
 
         entity.AddDomainEvent(new AnalysisDeletedEvent(entity));
 
-        await _repository.SaveChangesAsync(token);
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
     }
 }

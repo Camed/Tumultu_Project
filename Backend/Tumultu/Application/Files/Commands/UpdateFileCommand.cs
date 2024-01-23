@@ -13,10 +13,12 @@ public record UpdateFileCommand : IRequest
 public class UpdateFileCommandHandler : IRequestHandler<UpdateFileCommand>
 {
     private readonly IFileRepository _repository;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public UpdateFileCommandHandler(IFileRepository fileRepository)
+    public UpdateFileCommandHandler(IFileRepository fileRepository, IUnitOfWork unitOfWork)
     {
         _repository = fileRepository;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task Handle(UpdateFileCommand request, CancellationToken cancellationToken)
@@ -29,6 +31,6 @@ public class UpdateFileCommandHandler : IRequestHandler<UpdateFileCommand>
 
         _repository.Update(entity);
 
-        await _repository.SaveChangesAsync(cancellationToken);
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
     }
 }

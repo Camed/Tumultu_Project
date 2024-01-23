@@ -1,5 +1,6 @@
 ﻿using Ardalis.GuardClauses;
 using MediatR;
+using Tumultu.Application.Common.Interfaces;
 using Tumultu.Domain.Entities;
 using Tumultu.Domain.Events;
 
@@ -11,9 +12,12 @@ public record DeleteFileVariantCommand(Guid Id) : IRequest;
 public class DeleteFileVariantCommandHandler : IRequestHandler<DeleteFileVariantCommand>
 {
     private readonly IFileVariantRepository _repository;
-    public DeleteFileVariantCommandHandler(IFileVariantRepository fileVariantRepository)
+    private readonly IUnitOfWork _unitOfWork;
+    
+    public DeleteFileVariantCommandHandler(IFileVariantRepository fileVariantRepository, IUnitOfWork unitOfWork)
     {
         _repository = fileVariantRepository;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task Handle(DeleteFileVariantCommand request, CancellationToken cancellationToken)
@@ -23,7 +27,7 @@ public class DeleteFileVariantCommandHandler : IRequestHandler<DeleteFileVariant
         Guard.Against.NotFound(request.Id, entity);
         _repository.Delete(entity);
 
-        await _repository.SaveChangesAsync(cancellationToken);
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
         entity.AddDomainEvent(new FileVariantDeletedEvent(entity));
 
     }
