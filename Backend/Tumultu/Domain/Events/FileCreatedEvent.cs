@@ -3,7 +3,7 @@ using Tumultu.Domain.Entities;
 
 namespace Tumultu.Domain.Events;
 
-public class FileCreatedEvent : BaseEvent
+public sealed class FileCreatedEvent : BaseEvent
 {
     public FileCreatedEvent(FileEntity entity)
     {

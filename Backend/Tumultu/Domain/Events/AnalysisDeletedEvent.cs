@@ -3,7 +3,7 @@ using Tumultu.Domain.Entities;
 
 namespace Tumultu.Domain.Events;
 
-public class AnalysisDeletedEvent : BaseEvent
+public sealed class AnalysisDeletedEvent : BaseEvent
 {
     public AnalysisDeletedEvent(AnalysisResult analysis)
     {
