@@ -6,13 +6,14 @@ using Tumultu.Domain.Events;
 
 namespace Tumultu.Application.Files.Commands;
 
-public record CreateFileCommand : IRequest<Guid>
+public record CreateFileCommand : IRequest<FileEntity?>
 {
     public string? FileName { get; init; }
+    public User? User { get; init; }
     public byte[] Payload { get; init; } = Array.Empty<byte>();
 };
 
-public class CreateFileCommandHandler : IRequestHandler<CreateFileCommand, Guid>
+public class CreateFileCommandHandler : IRequestHandler<CreateFileCommand, FileEntity?>
 {
     private readonly IFileRepository _repository;
     private readonly IUnitOfWork _unitOfWork;
@@ -23,7 +24,7 @@ public class CreateFileCommandHandler : IRequestHandler<CreateFileCommand, Guid>
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<Guid> Handle(CreateFileCommand request, CancellationToken cancellationToken)
+    public async Task<FileEntity?> Handle(CreateFileCommand request, CancellationToken cancellationToken)
     {
         string md5 = request.Payload.GetMD5();
         string sha1 = request.Payload.GetSHA1();
@@ -33,10 +34,10 @@ public class CreateFileCommandHandler : IRequestHandler<CreateFileCommand, Guid>
             await _repository.GetAllByAnySignature(md5, sha1, sha256);
 
         // this file already exists
-        if (filesWithSameSignature.Any())
+        if (filesWithSameSignature.Count() > 0)
         {
             // handle file variant creation
-            return Guid.Empty;
+            return filesWithSameSignature.FirstOrDefault();
         }
 
         var entity = new FileEntity
@@ -53,6 +54,6 @@ public class CreateFileCommandHandler : IRequestHandler<CreateFileCommand, Guid>
 
         entity.AddDomainEvent(new FileCreatedEvent(entity));
 
-        return entity.Id;
+        return entity;
     }
 }

@@ -1,7 +1,9 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Tumultu.Application.AnalysisResults.Commands;
 using Tumultu.Application.Files.Commands;
 using Tumultu.Application.Files.Queries;
+using Tumultu.Application.FileVariants.Commands;
 using Tumultu.Domain.Entities;
 
 namespace Tumultu.Presentation.Controllers;
@@ -26,8 +28,14 @@ public class FilesController : ControllerBase
     }
 
     [HttpPost(Name = "CreateFile")]
-    public Task<Guid> AddFile(CreateFileCommand command)
+    public async Task<Guid> AddFile(CreateFileCommand command)
     {
-        return _mediator.Send(command);
+        var newFile = await _mediator.Send(command);
+
+        var fileVariantCommand = new CreateFileVariantCommand() { File = newFile, Name = command.FileName, UploadedBy = command.User };
+        await _mediator.Send(fileVariantCommand);
+
+        return newFile!.Id;
+        
     }
 }

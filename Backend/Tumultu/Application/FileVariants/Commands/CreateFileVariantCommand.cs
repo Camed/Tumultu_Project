@@ -1,11 +1,12 @@
-﻿using MediatR;
+﻿using Ardalis.GuardClauses;
+using MediatR;
 using Tumultu.Application.Common.Interfaces;
 using Tumultu.Domain.Entities;
 using Tumultu.Domain.Events;
 
 namespace Tumultu.Application.FileVariants.Commands;
 
-public record CreateFileVariantCommand : IRequest<Guid>
+public record CreateFileVariantCommand : IRequest<FileVariant?>
 {
     public FileEntity? File { get; init; }
     public DateTimeOffset? CreatedDate { get; init; }
@@ -15,7 +16,7 @@ public record CreateFileVariantCommand : IRequest<Guid>
 
 }
 
-public class CreateFileVariantCommandHandler : IRequestHandler<CreateFileVariantCommand, Guid>
+public class CreateFileVariantCommandHandler : IRequestHandler<CreateFileVariantCommand, FileVariant?>
 {
     private readonly IFileVariantRepository _repository;
     private readonly IUnitOfWork _unitOfWork;
@@ -26,8 +27,10 @@ public class CreateFileVariantCommandHandler : IRequestHandler<CreateFileVariant
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<Guid> Handle(CreateFileVariantCommand request, CancellationToken cancellationToken)
+    public async Task<FileVariant?> Handle(CreateFileVariantCommand request, CancellationToken cancellationToken)
     {
+        Guard.Against.Null(request.File);
+
         var entity = new FileVariant
         {
             Name = request.Name,
@@ -37,11 +40,18 @@ public class CreateFileVariantCommandHandler : IRequestHandler<CreateFileVariant
             File = request.File
         };
 
+        var existingVariantsByUser = (await _repository.GetAllFileVariantsByFile(request.File))
+            .Where(x => x.UploadedBy == request.UploadedBy);
+        if (existingVariantsByUser.Count() > 0)
+        {
+            return existingVariantsByUser.FirstOrDefault();
+        }
+
         _repository.Insert(entity);
 
         await _unitOfWork.SaveChangesAsync(cancellationToken);
         entity.AddDomainEvent(new FileVariantCreatedEvent(entity));
 
-        return entity.Id;
+        return entity;
     }
 }
