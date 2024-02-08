@@ -49,13 +49,20 @@ public class CreateFileCommandHandler : IRequestHandler<CreateFileCommand, FileE
             Size = request.Payload.Length,
         };
 
-        var analysis = performFirstAnalysis(request.Payload, request.User!);
+        var variant = createFileVariant(entity, request.User!);
+        var analysis = await performFirstAnalysis(request.Payload, request.User!);
+
         entity.AnalysisResult = analysis;
+        entity.Variants = entity.Variants.Concat(new[] { variant });
+
         _repository.Insert(entity);
 
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         entity.AddDomainEvent(new FileCreatedEvent(entity));
+
+        analysis.AddDomainEvent(new AnalysisCreatedEvent(analysis));
+        analysis.AddDomainEvent(new AnalysisCompletedEvent(analysis));
 
         return entity;
     }
@@ -71,5 +78,16 @@ public class CreateFileCommandHandler : IRequestHandler<CreateFileCommand, FileE
         analysisResult.OriginalAnalysisBy = requestingUser;
 
         return analysisResult;
+    }
+
+    private FileVariant createFileVariant(FileEntity file, User requestingUser)
+    {
+        // create logic for file variant creation and gathering data from payload
+        var variant = new FileVariant()
+        {
+            File = file,
+            UploadedBy = requestingUser,
+        };
+        return variant;
     }
 }
