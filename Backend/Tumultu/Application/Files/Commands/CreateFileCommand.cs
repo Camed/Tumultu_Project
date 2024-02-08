@@ -3,6 +3,7 @@ using MediatR;
 using Tumultu.Application.Common.Interfaces;
 using Tumultu.Domain.Entities;
 using Tumultu.Domain.Events;
+using Tumultu.Domain.Constants;
 
 namespace Tumultu.Application.Files.Commands;
 
@@ -48,6 +49,8 @@ public class CreateFileCommandHandler : IRequestHandler<CreateFileCommand, FileE
             Size = request.Payload.Length,
         };
 
+        var analysis = performFirstAnalysis(request.Payload, request.User!);
+        entity.AnalysisResult = analysis;
         _repository.Insert(entity);
 
         await _unitOfWork.SaveChangesAsync(cancellationToken);
@@ -55,5 +58,18 @@ public class CreateFileCommandHandler : IRequestHandler<CreateFileCommand, FileE
         entity.AddDomainEvent(new FileCreatedEvent(entity));
 
         return entity;
+    }
+
+    private async Task<AnalysisResult> performFirstAnalysis(byte[] payload, User requestingUser)
+    {
+        var analysisResult = new AnalysisResult();
+
+        analysisResult.AnalysisDate = DateTime.UtcNow;
+        analysisResult.LatestAnalysisBy = requestingUser;
+        analysisResult.DetectedSignatures = Signatures.MatchSignatures(payload);
+        analysisResult.EntropyData = await payload.CalculateEntropyAsync(256);
+        analysisResult.OriginalAnalysisBy = requestingUser;
+
+        return analysisResult;
     }
 }
