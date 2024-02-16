@@ -1,0 +1,7 @@
+<mat-list style="width: 90%">
+  <div *ngFor="let file of files | async">
+    <mat-list-item>
+      <app-file-item [file]="file"></app-file-item>
+    </mat-list-item>
+  </div>
+</mat-list>
