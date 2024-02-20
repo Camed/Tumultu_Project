@@ -27,7 +27,7 @@ public static class EntropyExtensions
 
     public static List<double> CalculateEntropy(this byte[] payload, int amountOfSamples)
     {
-        if(amountOfSamples > payload.Length)
+        if (amountOfSamples > payload.Length)
         {
             throw new InvalidAmountOfSamplesException(payload.Length, amountOfSamples);
         }
@@ -35,7 +35,7 @@ public static class EntropyExtensions
         _sampleSize = payload.Length / amountOfSamples;
 
         var entropyOfSamples = new List<double>();
-        for(int i = 0; i < amountOfSamples; i++)
+        for (int i = 0; i < amountOfSamples; i++)
         {
             byte[] bytes = new byte[_sampleSize];
 
@@ -52,28 +52,28 @@ public static class EntropyExtensions
 
     public static async Task<List<double>> CalculateEntropyAsync(this byte[] payload, int amountOfSamples)
     {
-            if (amountOfSamples > payload.Length)
-            {
-                throw new InvalidAmountOfSamplesException(payload.Length, amountOfSamples);
-            }
+        if (amountOfSamples > payload.Length)
+        {
+            throw new InvalidAmountOfSamplesException(payload.Length, amountOfSamples);
+        }
 
-            _sampleSize = payload.Length / amountOfSamples;
-            var tasks = new List<Task>();
+        _sampleSize = payload.Length / amountOfSamples;
+        var tasks = new List<Task<double>>();
 
-            var entropyOfSamples = new List<double>();
-            for (int i = 0; i < amountOfSamples; i++)
-            {
-                byte[] bytes = new byte[_sampleSize];
+        var entropyOfSamples = new List<double>();
+        for (int i = 0; i < amountOfSamples; i++)
+        {
+            byte[] bytes = new byte[_sampleSize];
 
-                for (int j = 0; j < _sampleSize; j++)
-                    bytes[j] = payload[(i * _sampleSize) + j];
+            for (int j = 0; j < _sampleSize; j++)
+                bytes[j] = payload[(i * _sampleSize) + j];
 
-                tasks.Add(Task.Run(() => entropyOfSamples.Add(
-                        GetSampleEntropy(bytes)
-                    )));
-            }
-            await Task.WhenAll(tasks);
+            tasks.Add(Task.Run(() =>
+                    GetSampleEntropy(bytes)
+                ));
+        }
+        var results = await Task.WhenAll(tasks).ConfigureAwait(false);
+        return results.ToList();
 
-            return entropyOfSamples;
-     }
+    }
 }

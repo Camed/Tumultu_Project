@@ -3,7 +3,7 @@ using MediatR;
 using Tumultu.Application.Common.Interfaces;
 using Tumultu.Domain.Entities;
 using Tumultu.Domain.Events;
-using Tumultu.Domain.Constants;
+using System.Linq;
 
 namespace Tumultu.Application.Files.Commands;
 
@@ -49,11 +49,11 @@ public class CreateFileCommandHandler : IRequestHandler<CreateFileCommand, FileE
             Size = request.Payload.Length,
         };
 
-        var variant = createFileVariant(entity, request.User!);
-        var analysis = await performFirstAnalysis(request.Payload, request.User!);
+        var variant = FileVariant.CreateFileVariant(entity, request.User!);
+        var analysis = await AnalysisResult.CreateAnalysisAsync(request.Payload, request.User!);
 
         entity.AnalysisResult = analysis;
-        entity.Variants = entity.Variants.Concat(new[] { variant });
+        entity.Variants.Add(variant);
 
         _repository.Insert(entity);
 
@@ -65,29 +65,5 @@ public class CreateFileCommandHandler : IRequestHandler<CreateFileCommand, FileE
         analysis.AddDomainEvent(new AnalysisCompletedEvent(analysis));
 
         return entity;
-    }
-
-    private async Task<AnalysisResult> performFirstAnalysis(byte[] payload, User requestingUser)
-    {
-        var analysisResult = new AnalysisResult();
-
-        analysisResult.AnalysisDate = DateTime.UtcNow;
-        analysisResult.LatestAnalysisBy = requestingUser;
-        analysisResult.DetectedSignatures = Signatures.MatchSignatures(payload);
-        analysisResult.EntropyData = await payload.CalculateEntropyAsync(256);
-        analysisResult.OriginalAnalysisBy = requestingUser;
-
-        return analysisResult;
-    }
-
-    private FileVariant createFileVariant(FileEntity file, User requestingUser)
-    {
-        // create logic for file variant creation and gathering data from payload
-        var variant = new FileVariant()
-        {
-            File = file,
-            UploadedBy = requestingUser,
-        };
-        return variant;
     }
 }

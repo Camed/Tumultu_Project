@@ -31,10 +31,6 @@ public class FilesController : ControllerBase
     public async Task<Guid> AddFile(CreateFileCommand command)
     {
         var newFile = await _mediator.Send(command);
-
-        var fileVariantCommand = new CreateFileVariantCommand() { File = newFile, Name = command.FileName, UploadedBy = command.User };
-        await _mediator.Send(fileVariantCommand);
-
         return newFile!.Id;
         
     }

@@ -15,5 +15,5 @@ public class User : BaseEntity<Guid>
     public DateTimeOffset? LastLoginDate { get; set; }
     public DateTimeOffset? EmailVerificationDate { get; set; }
     public bool IsActive { get; set; }
-    public IEnumerable<FileNote> Notes { get; set; } = [];
+    public IList<FileNote> Notes { get; set; } = [];
 }

@@ -5,8 +5,8 @@ namespace Tumultu.Domain.Entities;
 
 public class FileEntity : BaseEntity<Guid>
 {
-    public IEnumerable<FileVariant> Variants { get; set; } = [];
-    public IEnumerable<FileString> FileStrings { get; set; } = [];
+    public IList<FileVariant> Variants { get; set; } = [];
+    public IList<FileString> FileStrings { get; set; } = [];
     public int Size { get; set; } = -1;
     public string? MD5Signature { get; set; }
     public string? SHA1Signature { get; set; }

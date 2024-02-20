@@ -86,7 +86,7 @@ public static class Signatures
     }
     private static readonly IEnumerable<Signature> signatures;
 
-    public static IEnumerable<Signature> MatchSignatures(byte[] payload)
+    public static IList<Signature> MatchSignatures(byte[] payload)
     {
         var payloadLength = payload.Length;
         
