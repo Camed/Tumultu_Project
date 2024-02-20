@@ -20,7 +20,7 @@ public class CreateAnalysisResultCommandHandler : IRequestHandler<CreateAnalysis
     public Task<Guid> Handle(CreateAnalysisResultCommand request, CancellationToken cancellationToken)
     {
         // temporary stuff so tests pass
-        AnalysisResult result = new AnalysisResult();
+        //AnalysisResult result = new AnalysisResult();
         throw new NotImplementedException();
     }
 }

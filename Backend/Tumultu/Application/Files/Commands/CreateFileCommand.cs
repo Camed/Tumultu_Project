@@ -34,36 +34,38 @@ public class CreateFileCommandHandler : IRequestHandler<CreateFileCommand, FileE
         IEnumerable<FileEntity> filesWithSameSignature = 
             await _repository.GetAllByAnySignature(md5, sha1, sha256);
 
+
+        FileEntity workingEntity;
+
         // this file already exists
         if (filesWithSameSignature.Count() > 0)
         {
             // handle file variant creation
-            return filesWithSameSignature.FirstOrDefault();
+            FileEntity existingEntity = filesWithSameSignature.FirstOrDefault()!;
+
+            existingEntity.AddVariant(request.User!);
+
+            workingEntity = existingEntity;
+        }
+        else
+        {
+            var newEntity = FileEntity.Create(md5,
+                                sha1,
+                                sha256,
+                                request.Payload,
+                                request.User!);
+
+            _repository.Insert(newEntity);
+            workingEntity = newEntity;
         }
 
-        var entity = new FileEntity
-        {
-            MD5Signature = md5,
-            SHA1Signature = sha1,
-            SHA256Signature = sha256,
-            Size = request.Payload.Length,
-        };
-
-        var variant = FileVariant.CreateFileVariant(entity, request.User!);
-        var analysis = await AnalysisResult.CreateAnalysisAsync(request.Payload, request.User!);
-
-        entity.AnalysisResult = analysis;
-        entity.Variants.Add(variant);
-
-        _repository.Insert(entity);
 
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-        entity.AddDomainEvent(new FileCreatedEvent(entity));
+        //entity.AddDomainEvent(new FileCreatedEvent(entity));
+        //analysis.AddDomainEvent(new AnalysisCreatedEvent(analysis));
+        //analysis.AddDomainEvent(new AnalysisCompletedEvent(analysis));
 
-        analysis.AddDomainEvent(new AnalysisCreatedEvent(analysis));
-        analysis.AddDomainEvent(new AnalysisCompletedEvent(analysis));
-
-        return entity;
+        return workingEntity;
     }
 }

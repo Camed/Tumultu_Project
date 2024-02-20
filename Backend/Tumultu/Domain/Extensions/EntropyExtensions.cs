@@ -50,7 +50,7 @@ public static class EntropyExtensions
         return entropyOfSamples;
     }
 
-    public static async Task<List<double>> CalculateEntropyAsync(this byte[] payload, int amountOfSamples)
+    public static async Task<List<double>> CalculateEntropyAsync(this byte[] payload, int amountOfSamples, CancellationToken cancellationToken)
     {
         if (amountOfSamples > payload.Length)
         {
@@ -69,8 +69,12 @@ public static class EntropyExtensions
                 bytes[j] = payload[(i * _sampleSize) + j];
 
             tasks.Add(Task.Run(() =>
-                    GetSampleEntropy(bytes)
-                ));
+            {
+                if (cancellationToken.IsCancellationRequested) 
+                    cancellationToken.ThrowIfCancellationRequested();
+
+                return GetSampleEntropy(bytes);
+            }));
         }
         var results = await Task.WhenAll(tasks).ConfigureAwait(false);
         return results.ToList();
