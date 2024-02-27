@@ -16,7 +16,5 @@ import { MatList, MatListItem } from '@angular/material/list';
 })
 export class FilesListComponent {
   files = this.fileFacade.getFiles();
-  constructor(private fileFacade: FilesFacade) {
-    console.log();
-  }
+  constructor(private fileFacade: FilesFacade) {}
 }
