@@ -4,10 +4,7 @@ using Tumultu.Domain.Entities;
 
 namespace Tumultu.Application.Files.Queries;
 
-public record GetFileByIdQuery : IRequest<FileEntity>
-{
-    public Guid Id { get; init; }
-}
+public record GetFileByIdQuery(Guid Id) : IRequest<FileEntity>;
 
 public class GetFileByIdQueryHandler : IRequestHandler<GetFileByIdQuery, FileEntity>
 {

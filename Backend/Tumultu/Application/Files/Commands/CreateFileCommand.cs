@@ -6,11 +6,7 @@ using Tumultu.Domain.Events;
 
 namespace Tumultu.Application.Files.Commands;
 
-public record CreateFileCommand : IRequest<Guid>
-{
-    public string? FileName { get; init; }
-    public byte[] Payload { get; init; } = Array.Empty<byte>();
-};
+public record CreateFileCommand(string FileName, byte[] Payload) : IRequest<Guid>;
 
 public class CreateFileCommandHandler : IRequestHandler<CreateFileCommand, Guid>
 {

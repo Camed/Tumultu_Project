@@ -7,7 +7,7 @@ using Tumultu.Domain.Entities;
 namespace Tumultu.Presentation.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/[controller]")]
 public class FilesController : ControllerBase
 {
     private readonly ILogger<FilesController> _logger;
@@ -19,15 +19,23 @@ public class FilesController : ControllerBase
         _mediator = mediator;
     }
 
-    [HttpGet(Name = "GetFiles")]
-    public Task<IEnumerable<FileEntity>> GetFiles()
+    [HttpGet]
+    public Task<IEnumerable<FileEntity>> GetAll()
     {
         return _mediator.Send(new GetFilesQuery());
     }
 
-    [HttpPost(Name = "CreateFile")]
-    public Task<Guid> AddFile(CreateFileCommand command)
+    [HttpGet("{id:guid}")]
+    public Task<FileEntity> GetById(Guid id)
     {
-        return _mediator.Send(command);
+        return _mediator.Send(new GetFileByIdQuery(id));
+    }
+
+    [HttpPost]
+    public Task<Guid> Upload(IFormFile file)
+    {
+        using var memoryStream = new MemoryStream();
+        file.CopyTo(memoryStream);
+        return _mediator.Send(new CreateFileCommand(file.FileName, memoryStream.ToArray()));
     }
 }
