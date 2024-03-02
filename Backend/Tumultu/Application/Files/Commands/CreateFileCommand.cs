@@ -7,14 +7,8 @@ using System.Linq;
 
 namespace Tumultu.Application.Files.Commands;
 
-public record CreateFileCommand : IRequest<FileEntity?>
-{
-    public string? FileName { get; init; }
-    public User? User { get; init; }
-    public byte[] Payload { get; init; } = Array.Empty<byte>();
-};
-
-public class CreateFileCommandHandler : IRequestHandler<CreateFileCommand, FileEntity?>
+public record CreateFileCommand(string? FileName, User? User, byte[] Payload) : IRequest<Guid>;
+public class CreateFileCommandHandler : IRequestHandler<CreateFileCommand, Guid>
 {
     private readonly IFileRepository _repository;
     private readonly IUnitOfWork _unitOfWork;
@@ -25,7 +19,7 @@ public class CreateFileCommandHandler : IRequestHandler<CreateFileCommand, FileE
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<FileEntity?> Handle(CreateFileCommand request, CancellationToken cancellationToken)
+    public async Task<Guid> Handle(CreateFileCommand request, CancellationToken cancellationToken)
     {
         string md5 = request.Payload.GetMD5();
         string sha1 = request.Payload.GetSHA1();
@@ -66,6 +60,6 @@ public class CreateFileCommandHandler : IRequestHandler<CreateFileCommand, FileE
         //analysis.AddDomainEvent(new AnalysisCreatedEvent(analysis));
         //analysis.AddDomainEvent(new AnalysisCompletedEvent(analysis));
 
-        return workingEntity;
+        return workingEntity.Id;
     }
 }

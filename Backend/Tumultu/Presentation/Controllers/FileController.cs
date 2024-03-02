@@ -31,7 +31,7 @@ public class FilesController : ControllerBase
     public async Task<Guid> AddFile(CreateFileCommand command)
     {
         var newFile = await _mediator.Send(command);
-        return newFile!.Id;
+        return newFile!;
         
     }
 }
