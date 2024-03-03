@@ -38,4 +38,10 @@ public class FilesController : ControllerBase
         file.CopyTo(memoryStream);
         return _mediator.Send(new CreateFileCommand(file.FileName, memoryStream.ToArray()));
     }
+
+    [HttpDelete("{id:guid}")]
+    public Task Delete(Guid id)
+    {
+        return _mediator.Send(new DeleteFileCommand(id));
+    }
 }
