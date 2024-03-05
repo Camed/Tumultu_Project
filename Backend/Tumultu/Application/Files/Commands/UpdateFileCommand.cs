@@ -5,10 +5,7 @@ using Tumultu.Domain.Entities;
 
 namespace Tumultu.Application.Files.Commands;
 
-public record UpdateFileCommand : IRequest
-{
-    public Guid Id { get; init; }
-}
+public record UpdateFileCommand(Guid Id) : IRequest;
 
 public class UpdateFileCommandHandler : IRequestHandler<UpdateFileCommand>
 {
