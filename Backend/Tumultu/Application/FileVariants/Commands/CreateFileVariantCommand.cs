@@ -20,8 +20,6 @@ public class CreateFileVariantCommandHandler : IRequestHandler<CreateFileVariant
 
     public async Task<Guid> Handle(CreateFileVariantCommand request, CancellationToken cancellationToken)
     {
-        Guard.Against.Null(request.File);
-
         var entity = new FileVariant
         {
             Name = request.Name,
@@ -31,9 +29,9 @@ public class CreateFileVariantCommandHandler : IRequestHandler<CreateFileVariant
             File = request.File
         };
 
-        var existingVariantsByUser = (await _repository.GetAllFileVariantsByFile(request.File))
+        var existingVariantsByUser = (await _repository.GetAllFileVariantsByFile(request.File!))
             .Where(x => x.UploadedBy == request.UploadedBy);
-        if (existingVariantsByUser.Count() > 0)
+        if (existingVariantsByUser.Any())
         {
             return existingVariantsByUser.FirstOrDefault()!.Id;
         }

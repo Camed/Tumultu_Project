@@ -32,7 +32,7 @@ public class CreateFileCommandHandler : IRequestHandler<CreateFileCommand, Guid>
         FileEntity workingEntity;
 
         // this file already exists
-        if (filesWithSameSignature.Count() > 0)
+        if (filesWithSameSignature.Any())
         {
             // handle file variant creation
             FileEntity existingEntity = filesWithSameSignature.FirstOrDefault()!;
