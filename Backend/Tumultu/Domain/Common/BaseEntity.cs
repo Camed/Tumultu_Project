@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace Tumultu.Domain.Common;
 /// <summary>
@@ -15,6 +16,7 @@ public abstract class BaseEntity<T>
     private readonly List<BaseEvent> _events = [];
 
     [NotMapped]
+    [JsonIgnore]
     public IReadOnlyCollection<BaseEvent> DomainEvents => _events.AsReadOnly();
 
     public void AddDomainEvent(BaseEvent domainEvent) => _events.Add(domainEvent);

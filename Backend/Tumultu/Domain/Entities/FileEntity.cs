@@ -20,27 +20,27 @@ public class FileEntity : BaseEntity<Guid>
     public string? SHA256Signature { get; set; }
     public AnalysisResult? AnalysisResult { get; set; }
 
-    public static async Task<FileEntity> CreateAsync(string md5, string sha1, string sha256, byte[] payload, User uploadingUser, CancellationToken cancellationToken)
-    {
-            FileEntity entity = new FileEntity(md5, sha1, sha256, payload);
-            entity.AddVariant(uploadingUser);
-            entity.AnalysisResult = await AnalysisResult.CreateAnalysisAsync(payload, uploadingUser, cancellationToken);
-
-            return entity;
-    }
-
-    public static FileEntity Create(string md5, string sha1, string sha256, byte[] payload, User uploadingUser)
+    public static async Task<FileEntity> CreateAsync(string md5, string sha1, string sha256, byte[] payload/*, User uploadingUser*/, CancellationToken cancellationToken)
     {
         FileEntity entity = new FileEntity(md5, sha1, sha256, payload);
-        entity.AddVariant(uploadingUser);
-        entity.AnalysisResult = AnalysisResult.CreateAnalysis(payload, uploadingUser);
+        entity.AddVariant();
+        entity.AnalysisResult = await AnalysisResult.CreateAnalysisAsync(payload/*, uploadingUser*/, cancellationToken);
 
         return entity;
     }
 
-    public void AddVariant(User uploadingUser)
+    public static FileEntity Create(string md5, string sha1, string sha256, byte[] payload)
     {
-        FileVariant newVariant = FileVariant.CreateFileVariant(this, uploadingUser);
+        FileEntity entity = new FileEntity(md5, sha1, sha256, payload);
+        entity.AddVariant();
+        entity.AnalysisResult = AnalysisResult.CreateAnalysis(payload/*, uploadingUser*/);
+
+        return entity;
+    }
+
+    public void AddVariant(/*User uploadingUser*/)
+    {
+        FileVariant newVariant = FileVariant.CreateFileVariant(this);
         Variants.Add(newVariant);
     }
 }

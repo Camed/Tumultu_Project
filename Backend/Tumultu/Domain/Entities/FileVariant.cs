@@ -12,14 +12,14 @@ public class FileVariant : BaseAuditableEntity<Guid>
     public IList<Tag> Tags { get; set; } = [];
     public FileMetadata? Metadata { get; set; }
 
-    public static FileVariant CreateFileVariant(FileEntity file, User requestingUser)
+    public static FileVariant CreateFileVariant(FileEntity file)
     {
         // create logic for file variant creation and gathering data from payload
 
         var variant = new FileVariant()
         {
             File = file,
-            UploadedBy = requestingUser,
+            //UploadedBy = requestingUser,
             CreationTime = DateTime.UtcNow,
             ModifiedTime = DateTime.UtcNow
         };

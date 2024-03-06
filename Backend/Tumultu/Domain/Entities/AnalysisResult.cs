@@ -7,12 +7,12 @@ namespace Tumultu.Domain.Entities;
 
 public class AnalysisResult : BaseEntity<Guid>
 {
-    private AnalysisResult(byte[] payload, User requestingUser)
+    private AnalysisResult(byte[] payload/*, User requestingUser*/)
     {
         this.AnalysisDate = DateTime.UtcNow;
-        this.LatestAnalysisBy = requestingUser;
+        //this.LatestAnalysisBy = requestingUser;
         this.DetectedSignatures = Signatures.MatchSignatures(payload);
-        this.OriginalAnalysisBy = requestingUser;
+        //this.OriginalAnalysisBy = requestingUser;
     }
     public DateTimeOffset AnalysisDate { get; set; }
     public IList<Signature> DetectedSignatures { get; set; } = [];
@@ -21,18 +21,22 @@ public class AnalysisResult : BaseEntity<Guid>
     public User? OriginalAnalysisBy { get; set; }
     public User? LatestAnalysisBy { get; set;}
 
-    public static AnalysisResult CreateAnalysis(byte[] payload, User requestingUser)
+    public static AnalysisResult CreateAnalysis(byte[] payload/*, User requestingUser*/)
     {
-        var analysisResult = new AnalysisResult(payload, requestingUser);
-        analysisResult.EntropyData =  payload.CalculateEntropy(256);
+        var analysisResult = new AnalysisResult(payload/*, requestingUser*/)
+        {
+            EntropyData = payload.CalculateEntropy(256)
+        };
 
         return analysisResult;
     }
 
-    public static async Task<AnalysisResult> CreateAnalysisAsync(byte[] payload, User requestingUser, CancellationToken cancellationToken)
+    public static async Task<AnalysisResult> CreateAnalysisAsync(byte[] payload/*, User requestingUser*/, CancellationToken cancellationToken)
     {
-        var analysisResult = new AnalysisResult(payload, requestingUser);
-        analysisResult.EntropyData = await payload.CalculateEntropyAsync(256, cancellationToken);
+        var analysisResult = new AnalysisResult(payload/*, requestingUser*/)
+        {
+            EntropyData = await payload.CalculateEntropyAsync(256, cancellationToken)
+        };
 
         return analysisResult;
     }

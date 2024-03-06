@@ -7,7 +7,8 @@ using System.Linq;
 
 namespace Tumultu.Application.Files.Commands;
 
-public record CreateFileCommand(string? FileName, User? User, byte[] Payload) : IRequest<Guid>;
+public record CreateFileCommand(string FileName, byte[] Payload) : IRequest<Guid>;
+
 public class CreateFileCommandHandler : IRequestHandler<CreateFileCommand, Guid>
 {
     private readonly IFileRepository _repository;
@@ -37,7 +38,7 @@ public class CreateFileCommandHandler : IRequestHandler<CreateFileCommand, Guid>
             // handle file variant creation
             FileEntity existingEntity = filesWithSameSignature.FirstOrDefault()!;
 
-            existingEntity.AddVariant(request.User!);
+            existingEntity.AddVariant();
 
             workingEntity = existingEntity;
         }
@@ -46,8 +47,7 @@ public class CreateFileCommandHandler : IRequestHandler<CreateFileCommand, Guid>
             var newEntity = FileEntity.Create(md5,
                                 sha1,
                                 sha256,
-                                request.Payload,
-                                request.User!);
+                                request.Payload);
 
             _repository.Insert(newEntity);
             workingEntity = newEntity;
