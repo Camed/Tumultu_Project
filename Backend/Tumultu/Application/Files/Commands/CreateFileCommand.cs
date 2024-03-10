@@ -3,6 +3,7 @@ using MediatR;
 using Tumultu.Application.Common.Interfaces;
 using Tumultu.Domain.Entities;
 using Tumultu.Domain.Events;
+using System.Linq;
 
 namespace Tumultu.Application.Files.Commands;
 
@@ -28,27 +29,37 @@ public class CreateFileCommandHandler : IRequestHandler<CreateFileCommand, Guid>
         IEnumerable<FileEntity> filesWithSameSignature = 
             await _repository.GetAllByAnySignature(md5, sha1, sha256);
 
+
+        FileEntity workingEntity;
+
         // this file already exists
         if (filesWithSameSignature.Any())
         {
             // handle file variant creation
-            return Guid.Empty;
+            FileEntity existingEntity = filesWithSameSignature.FirstOrDefault()!;
+
+            existingEntity.AddVariant();
+
+            workingEntity = existingEntity;
+        }
+        else
+        {
+            var newEntity = FileEntity.Create(md5,
+                                sha1,
+                                sha256,
+                                request.Payload);
+
+            _repository.Insert(newEntity);
+            workingEntity = newEntity;
         }
 
-        var entity = new FileEntity
-        {
-            MD5Signature = md5,
-            SHA1Signature = sha1,
-            SHA256Signature = sha256,
-            Size = request.Payload.Length,
-        };
-
-        _repository.Insert(entity);
 
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-        entity.AddDomainEvent(new FileCreatedEvent(entity));
+        //entity.AddDomainEvent(new FileCreatedEvent(entity));
+        //analysis.AddDomainEvent(new AnalysisCreatedEvent(analysis));
+        //analysis.AddDomainEvent(new AnalysisCompletedEvent(analysis));
 
-        return entity.Id;
+        return workingEntity.Id;
     }
 }

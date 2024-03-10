@@ -13,6 +13,9 @@ public class CreateFileVariantCommandValidator : AbstractValidator<CreateFileVar
 
         if(settings is null) throw new ArgumentNullException(nameof(settings));
 
+        RuleFor(x => x.File)
+            .NotNull();
+
         RuleFor(x => x.DateModified)
             .GreaterThanOrEqualTo(x => x.CreatedDate)
             .NotNull();
