@@ -5,6 +5,7 @@ namespace Tumultu.Domain.ValueObjects;
 
 public class Signature : ValueObject
 {
+    public Signature() {}
     public Signature(byte[]? bytes, int offset, string? name, string description, string[] possibleExtensions, Endianess endianess = Endianess.LittleEndian)
     {
         this.FileExtensions = possibleExtensions;

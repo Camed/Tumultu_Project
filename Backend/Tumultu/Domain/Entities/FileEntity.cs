@@ -5,6 +5,8 @@ namespace Tumultu.Domain.Entities;
 
 public class FileEntity : BaseEntity<Guid>
 {
+    private FileEntity(){}
+    
     private FileEntity(string md5, string sha1, string sha256, byte[] payload)
     {
         this.MD5Signature = md5;
