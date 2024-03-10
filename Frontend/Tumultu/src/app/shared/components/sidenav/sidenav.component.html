@@ -1,0 +1,10 @@
+<mat-sidenav-container>
+  <mat-sidenav mode="side" [opened]="showSideNav" class="sidenav">
+    <app-sidenav-item text="My Files" url="/files"> </app-sidenav-item>
+    <app-sidenav-item text="Settings" url="/files"> </app-sidenav-item>
+    <app-sidenav-item text="Account" url="/files"> </app-sidenav-item>
+  </mat-sidenav>
+  <mat-sidenav-content class="container">
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>
