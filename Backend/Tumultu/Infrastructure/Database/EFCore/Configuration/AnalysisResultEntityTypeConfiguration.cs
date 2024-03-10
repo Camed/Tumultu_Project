@@ -8,7 +8,6 @@ internal class AnalysisResultEntityTypeConfiguration : IEntityTypeConfiguration<
 {
     public void Configure(EntityTypeBuilder<AnalysisResult> builder)
     {
-        
-        //TODO add property constraints and indexes (ex. like max length for string values)
+        builder.OwnsMany(entity => entity.DetectedSignatures);
     }
 }

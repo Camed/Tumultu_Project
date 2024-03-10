@@ -12,9 +12,6 @@ public class CreateFileCommandValidator : AbstractValidator<CreateFileCommand>
 
         if(settings is null) throw new ArgumentNullException(nameof(settings));
 
-        RuleFor(x => x.User)
-            .NotNull();
-
         RuleFor(x => x.Payload)
             .NotNull()
             .NotEmpty();

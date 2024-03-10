@@ -7,13 +7,8 @@ namespace Tumultu.Domain.Entities;
 
 public class AnalysisResult : BaseEntity<Guid>
 {
-    private AnalysisResult(byte[] payload/*, User requestingUser*/)
-    {
-        this.AnalysisDate = DateTime.UtcNow;
-        //this.LatestAnalysisBy = requestingUser;
-        this.DetectedSignatures = Signatures.MatchSignatures(payload);
-        //this.OriginalAnalysisBy = requestingUser;
-    }
+    private AnalysisResult() { }
+    
     public DateTimeOffset AnalysisDate { get; set; }
     public IList<Signature> DetectedSignatures { get; set; } = [];
     public IList<Behaviour> DetectedBehaviours { get; set; } = [];
@@ -23,8 +18,9 @@ public class AnalysisResult : BaseEntity<Guid>
 
     public static AnalysisResult CreateAnalysis(byte[] payload/*, User requestingUser*/)
     {
-        var analysisResult = new AnalysisResult(payload/*, requestingUser*/)
+        var analysisResult = new AnalysisResult()
         {
+            DetectedSignatures = Signatures.MatchSignatures(payload),
             EntropyData = payload.CalculateEntropy(256)
         };
 
@@ -33,8 +29,9 @@ public class AnalysisResult : BaseEntity<Guid>
 
     public static async Task<AnalysisResult> CreateAnalysisAsync(byte[] payload/*, User requestingUser*/, CancellationToken cancellationToken)
     {
-        var analysisResult = new AnalysisResult(payload/*, requestingUser*/)
+        var analysisResult = new AnalysisResult()
         {
+            DetectedSignatures = Signatures.MatchSignatures(payload),
             EntropyData = await payload.CalculateEntropyAsync(256, cancellationToken)
         };
 
