@@ -9,10 +9,10 @@ public static class EntropyExtensions
     private static double GetSampleEntropy(byte[] bytes)
     {
         var entropy = 0.0;
-        Dictionary<byte, int> histogram = new Dictionary<byte, int>();
+        var histogram = new Dictionary<byte, int>();
 
-        for (byte b = 0; b < 0xFF; b++)
-            histogram.Add(b, 0);
+        for (var b = 0; b <= 0xFF; b++)
+            histogram.Add((byte)b, 0);
 
         foreach (byte b in bytes)
             histogram[b]++;
